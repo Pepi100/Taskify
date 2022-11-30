@@ -19,6 +19,5 @@ namespace Taskify.Models
         public virtual ICollection<Task> Tasks { get; set; }
 
 
-
     }
 }
