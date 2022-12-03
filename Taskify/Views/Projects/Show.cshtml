@@ -32,7 +32,7 @@
 
         <form method="post" action="/Projects/Delete/@Model.Id">
 
-            <button class="btn btn-danger" type="submit">Delete projects</button>
+            <button class="btn btn-danger" type="submit">Delete project</button>
 
         </form>
 
@@ -79,7 +79,10 @@
                         </form>
 
                     </div>
-
+                    <div>
+                        <a class="btn btn-success" href="/Tasks/Show/@task.Id">Show Task</a
+                    </div>
+                    <br/>
                 </div>
 
                 <br />
@@ -116,12 +119,14 @@
 
                         <label>Task info</label>
                         <br />
-                        <textarea class="form-control" name="Title">Task title</textarea>
+                        <lable>Task title</lable>
+                        <textarea class="form-control" name="Title"></textarea>
 
                         @Html.ValidationMessage("Title", null, new { @class = "text-danger"})
 
                         <br /><br />
-                        <textarea class="form-control" name="Description">Task description</textarea>
+                        <label>Task description</label>
+                        <textarea class="form-control" name="Description"></textarea>
                         <br /><br />
 
                         <label>Start date</label>

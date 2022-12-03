@@ -1,5 +1,60 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model Taskify.Models.Task
+
+<h2 class="text-center mt-5">Edit task</h2>
+<br />
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            @using (Html.BeginForm(actionName: "Edit", controllerName: "Tasks",
+            method: FormMethod.Post,
+            routeValues: new { id = Model.Id }))
+            {
+               
+
+
+                @Html.Label("Title", "Task Title")
+                <br />
+                @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control" } })
+
+                @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+                <br />
+                <br />
+
+                @Html.Label("Description", "Task Description")
+                <br />
+                @Html.Editor("Description", new { htmlAttributes = new { @class = "form-control" } })
+
+                <br />
+                <br />
+
+                @Html.Label("Status", "Task Status")
+                <br />
+                @Html.Editor("Status", new { htmlAttributes = new { @class = "form-control" } })
+
+                <br />
+                <br />
+
+                @Html.Label("StartDate", "Task Start Date")
+                <br />
+                @Html.Editor("StartDate", new { htmlAttributes = new { @class = "form-control" } })
+
+                <br />
+                <br />
+
+                @Html.Label("EndDate", "Task End Date")
+                <br />
+                @Html.Editor("EndDate", new { htmlAttributes = new { @class = "form-control" } })
+
+                <br />
+                <br />
+
+                <button class="btn btn-sm btn-success" type="submit">Update task</button>
+
+            }
+        </div>
+    </div>
+</div>
+
+
+
+

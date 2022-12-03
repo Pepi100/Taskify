@@ -72,6 +72,37 @@ namespace Taskify.Controllers
             }
         }
 
+        public IActionResult Edit(int id)
+        {
+
+            Project project = db.Projects.Include("Tasks")
+                                        .Where(proj => proj.Id == id)
+                                        .First();
+
+
+            return View(project);
+
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, Project requestProject)
+        {
+            Project project = db.Projects.Find(id);
+
+            if (ModelState.IsValid)
+            {
+                project.Title = requestProject.Title;
+                project.Description = requestProject.Description;
+                TempData["message"] = "Proiectul a fost modificat";
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(requestProject);
+            }
+        }
+
         [HttpPost]
         public ActionResult Delete(int id)
         {
