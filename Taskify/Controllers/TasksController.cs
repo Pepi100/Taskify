@@ -1,15 +1,17 @@
 ﻿using Taskify.Data;
 using Microsoft.AspNetCore.Mvc;
+using Taskify.Models;
+using Task = Taskify.Models.Task;
 
 namespace Taskify.Controllers
 {
     public class TasksController : Controller
     {
-        private readonly ApplicationDbContext _db;
+        private readonly ApplicationDbContext db;
 
         public TasksController(ApplicationDbContext context)
         {
-            _db = context;
+            db = context;
         }
 
 
@@ -18,6 +20,17 @@ namespace Taskify.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id) 
+        {
+            Task task = db.Tasks.Find(id);
+            db.Tasks.Remove(task);
+            db.SaveChanges();
+            TempData["message"] = "Taskul a fost sters";
+            return Redirect("/Projects/Show/" + task.ProjectId);
+            /*delete comms too*/
         }
     }
 }
