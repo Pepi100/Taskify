@@ -19,5 +19,7 @@ namespace Taskify.Models
 
         public virtual Task Task { get; set; }
 
+        /*Persoana care comenteaza*/
+
     }
 }

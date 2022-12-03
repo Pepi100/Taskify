@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\radun\\Desktop\\Taskify\\Taskify\\Taskify.csproj": {}
+    "D:\\Faculta\\AN2\\DAW\\Taskify\\Taskify\\Taskify.csproj": {}
   },
   "projects": {
-    "C:\\Users\\radun\\Desktop\\Taskify\\Taskify\\Taskify.csproj": {
+    "D:\\Faculta\\AN2\\DAW\\Taskify\\Taskify\\Taskify.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\radun\\Desktop\\Taskify\\Taskify\\Taskify.csproj",
+        "projectUniqueName": "D:\\Faculta\\AN2\\DAW\\Taskify\\Taskify\\Taskify.csproj",
         "projectName": "Taskify",
-        "projectPath": "C:\\Users\\radun\\Desktop\\Taskify\\Taskify\\Taskify.csproj",
-        "packagesPath": "C:\\Users\\radun\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\radun\\Desktop\\Taskify\\Taskify\\obj\\",
+        "projectPath": "D:\\Faculta\\AN2\\DAW\\Taskify\\Taskify\\Taskify.csproj",
+        "packagesPath": "C:\\Users\\David\\.nuget\\packages\\",
+        "outputPath": "D:\\Faculta\\AN2\\DAW\\Taskify\\Taskify\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\radun\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\David\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -65,7 +71,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -77,7 +84,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
       }
     }
