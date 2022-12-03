@@ -17,7 +17,7 @@ namespace Taskify.Models
         [Required]
         public int TaskId { get; set; }
 
-        public virtual Task Task { get; set; }
+        public virtual Task? Task { get; set; }
 
         /*Persoana care comenteaza*/
 

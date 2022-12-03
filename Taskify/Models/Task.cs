@@ -17,7 +17,7 @@ namespace Taskify.Models
         [Required(ErrorMessage = "Proiectul este obligatoriu")]
         public int ProjectId { get; set; }
 
-        public virtual Project Project { get; set; }
+        public virtual Project? Project { get; set; }
         public virtual ICollection<Comment>? Comments { get; set; }
     }
 }

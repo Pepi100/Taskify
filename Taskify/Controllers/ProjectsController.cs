@@ -1,12 +1,76 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Taskify.Data;
+using Taskify.Models;
+using Task = Taskify.Models.Task;
 
 namespace Taskify.Controllers
 {
     public class ProjectsController : Controller
     {
+        private readonly ApplicationDbContext db;
+        public ProjectsController(ApplicationDbContext context)
+        {
+            db = context;
+        }
         public IActionResult Index()
         {
+            var projects = db.Projects;
+            ViewBag.Projects = projects;
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+            }
             return View();
         }
+
+
+        public IActionResult New()
+        {
+            Project project = new Project();
+            return View(project);
+            /*de adaugat id user organiser*/
+        }
+
+        [HttpPost]
+        public IActionResult New(Project project)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Projects.Add(project);
+                db.SaveChanges();
+                TempData["message"] = "The project wad added";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View(project);
+            }
+        }
+
+        public IActionResult Show(int id)
+        {
+            var project = db.Projects.Include("Tasks").Where(proj => proj.Id == id).First();
+            return View(project);
+        }
+
+        [HttpPost]
+
+        public IActionResult Show([FromForm] Task task)
+        {
+
+            if (ModelState.IsValid)
+            {
+                db.Tasks.Add(task);
+                db.SaveChanges();
+                return Redirect("/Projects/Show/" + task.ProjectId);   
+            }
+            else
+            {
+                Project project = db.Projects.Include("Tasks").Where(proj => proj.Id == task.ProjectId).First();
+                return View(project);
+            }
+        }
+
     }
 }

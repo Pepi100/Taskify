@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Show projects</h2>
+<br />
+@if (ViewBag.Message != null)
+{
+    <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+}
+
+
+<div class="d-flex justify-content-center">
+    <a class="btn btn-outline-success" href="/Projects/New">Add a project</a>
+    <br />
+</div>
+
+<br />
+
+
+@foreach (Taskify.Models.Project project in ViewBag.Projects)
+{
+    <div class="card">
+
+
+        <div class="card-body">
+
+        <h3 class="card-title alert-success py-3 px-3 rounded-2">@project.Title</h3>
+
+        <div class="card-text">@project.Description</div>
+
+        </div>
+
+        <a class="btn btn-success" href="/Projects/Show/@project.Id">Show Proejct</a
+    
+
+    </div>
+
+    <br />
+    <br />
+}
