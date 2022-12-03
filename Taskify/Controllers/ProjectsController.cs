@@ -72,5 +72,15 @@ namespace Taskify.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            Project project = db.Projects.Find(id);
+            db.Projects.Remove(project);
+            db.SaveChanges();
+            TempData["message"] = "Project has been deleted.";
+            return RedirectToAction("Index");
+        }
+
     }
 }
