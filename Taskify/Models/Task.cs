@@ -14,8 +14,13 @@ namespace Taskify.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
-        [Required(ErrorMessage = "Proiectul este obligatoriu")]
-        public int ProjectId { get; set; }
+        /*Persoana care creaza taskul*/
+        public string? UserId { get; set; } ///punem string ca e hash
+
+        public virtual ApplicationUser? User { get; set; }
+
+
+        public int? ProjectId { get; set; }
 
         public virtual Project? Project { get; set; }
         public virtual ICollection<Comment>? Comments { get; set; }

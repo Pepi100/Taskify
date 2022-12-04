@@ -14,12 +14,15 @@ namespace Taskify.Models
 
         public DateTime Date { get; set; }
 
-        [Required]
-        public int TaskId { get; set; }
+        public int? TaskId { get; set; }
 
         public virtual Task? Task { get; set; }
 
         /*Persoana care comenteaza*/
+        public string? UserId { get; set; } ///punem string ca e hash
+
+        public virtual ApplicationUser? User { get; set; }
+        
 
     }
 }
