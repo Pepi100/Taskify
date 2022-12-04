@@ -13,10 +13,13 @@ namespace Taskify.Models
 
         public string Description { get; set; }
 
-        
 
-        /*[Required]
-        public virtual int OrganizerId { get; set; }*/
+
+        /*Persoana care creaza proiectul*/
+        public string? UserId { get; set; } ///punem string ca e hash
+
+        public virtual ApplicationUser? User { get; set; }
+
 
         public virtual ICollection<Task>? Tasks { get; set; }
 

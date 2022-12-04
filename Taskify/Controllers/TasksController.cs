@@ -3,18 +3,28 @@ using Microsoft.AspNetCore.Mvc;
 using Taskify.Models;
 using Task = Taskify.Models.Task;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Taskify.Controllers
 {
+    [Authorize]
+
     public class TasksController : Controller
     {
         private readonly ApplicationDbContext db;
-
-        public TasksController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public TasksController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager
+        )
         {
             db = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
-
 
         //se afiseaza lista tuturor taskurilor impreuna cu proiectul din care fac parte
 

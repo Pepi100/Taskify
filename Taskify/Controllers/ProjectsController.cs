@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Taskify.Data;
 using Taskify.Models;
@@ -6,16 +8,27 @@ using Task = Taskify.Models.Task;
 
 namespace Taskify.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext db;
-        public ProjectsController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public ProjectsController(
+            ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager,
+            RoleManager<IdentityRole> roleManager
+        )
         {
             db = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
         }
+
+        [Authorize(Roles = "User,Editor,Admin")]
         public IActionResult Index()
         {
-            var projects = db.Projects;
+            var projects = db.Projects.Include("User");
             ViewBag.Projects = projects;
             if (TempData.ContainsKey("message"))
             {
@@ -35,6 +48,7 @@ namespace Taskify.Controllers
         [HttpPost]
         public IActionResult New(Project project)
         {
+            project.UserId = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
                 db.Projects.Add(project);
@@ -47,10 +61,11 @@ namespace Taskify.Controllers
                 return View(project);
             }
         }
+        [Authorize(Roles = "User,Editor,Admin")]
 
         public IActionResult Show(int id)
         {
-            var project = db.Projects.Include("Tasks").Where(proj => proj.Id == id).First();
+            var project = db.Projects.Include("Tasks").Include("User").Where(proj => proj.Id == id).First();
             return View(project);
         }
 
@@ -58,6 +73,8 @@ namespace Taskify.Controllers
 
         public IActionResult Show([FromForm] Task task)
         {
+            task.UserId = _userManager.GetUserId(User);
+
 
             if (ModelState.IsValid)
             {
@@ -67,7 +84,7 @@ namespace Taskify.Controllers
             }
             else
             {
-                Project project = db.Projects.Include("Tasks").Where(proj => proj.Id == task.ProjectId).First();
+                Project project = db.Projects.Include("Tasks").Include("User").Where(proj => proj.Id == task.ProjectId).First();
                 return View(project);
             }
         }

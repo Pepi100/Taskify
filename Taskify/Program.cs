@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Taskify.Data;
+using Taskify.Models;
 
 //Program.cs este fisierul care se executa prima data in cadrul aplicatiei
 
@@ -16,14 +17,25 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>() 
     .AddEntityFrameworkStores<ApplicationDbContext>();
+/*rolul se adauga inaintea bd*/
 
 
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    ///CreateScope ofera acces la instanta curenta la aplicatiei
+    ///var scope are un Service Provider - fol pentru a injecta dependente in aplciatie
+    ///dependente = DB, Cookie, Sesiune, Autentificare, etc.
+    var services = scope.ServiceProvider;
+    SeedData.Initialize(services);
+
+}
 
 
 // Configure the HTTP request pipeline.

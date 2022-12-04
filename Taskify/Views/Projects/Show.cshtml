@@ -17,10 +17,14 @@
 
     <div class="card-body">
 
-    <h3 class="card-title alert-success py-3 px-3 rounded-2">@Model.Title</h3>
+        <h3 class="card-title alert-success py-3 px-3 rounded-2">@Model.Title</h3>
 
-    <div class="card-text">@Model.Description</div>
+        <div class="card-text">@Model.Description</div>
+        <div class="d-flex justify-content-between flex-row mt-5">
 
+            <div><i class="bi bi-globe"></i>@Model.User.UserName</div>
+
+        </div>
 
     </div>
 
@@ -57,7 +61,7 @@
 
                     <p>@task.Title</p>
                     <small>@task.Status</small><br/>
-                    <small>Om care se ocupa</small>
+                    <small>@task.UserId</small>
 
                 </div>
                 <br>
