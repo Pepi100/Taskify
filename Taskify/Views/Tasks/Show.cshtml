@@ -1,5 +1,5 @@
 ﻿@model Taskify.Models.Task
-
+@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager
 <div class="d-flex justify-content-center">
 
     <a class="btn btn-outline-success" href="/Projects/Show/@Model.ProjectId">Back to project</a>
@@ -56,10 +56,12 @@
 
                     <p>@comm.Content</p>
                     <small>@comm.Date</small><br />
+                    <small>@comm.User.UserName</small><br />
 
                 </div>
                 <br>
-
+                @if(@comm.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                {
                 <div class="d-flex">
 
                     <div>
@@ -68,8 +70,10 @@
 
                     </div>
 
-                    <div>
 
+                  
+                    <div>
+                        
                         <form method="post" action="/Comments/Delete/@comm.Id">
 
                             <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Delete Comment</button>
@@ -77,8 +81,9 @@
                         </form>
 
                     </div>
-
+                   
                 </div>
+                }                
 
                 <br />
 
