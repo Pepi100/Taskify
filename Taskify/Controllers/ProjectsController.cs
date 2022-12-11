@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 using Taskify.Data;
 using Taskify.Models;
 using Task = Taskify.Models.Task;
@@ -28,7 +30,8 @@ namespace Taskify.Controllers
         [Authorize(Roles = "User,Editor,Admin")]
         public IActionResult Index()
         {
-            var projects = db.Projects.Include("User");
+            var userid = _userManager.GetUserId(User);
+            var projects = db.Projects.Include("User").Where(proj => proj.UserId == userid);
             ViewBag.Projects = projects;
             if (TempData.ContainsKey("message"))
             {
@@ -37,6 +40,18 @@ namespace Taskify.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
+        public IActionResult IndexAdmin()
+        {
+            
+            var projects = db.Projects.Include("User");
+            ViewBag.Projects = projects;
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+            }
+            return View();
+        }
 
         public IActionResult New()
         {
@@ -65,8 +80,18 @@ namespace Taskify.Controllers
 
         public IActionResult Show(int id)
         {
-            var project = db.Projects.Include("Tasks").Include("User").Where(proj => proj.Id == id).First();
-            return View(project);
+            var userid = _userManager.GetUserId(User);
+            var project = db.Projects.Include("Tasks.User").Include("User").Where(proj => proj.Id == id).First();
+            if (userid == project.UserId || User.IsInRole("Admin"))
+            {
+                return View(project);
+            }
+            else
+            {
+                TempData["message"] = "Error! Nu ai acces";
+                ViewBag.Message = TempData["message"];
+                return RedirectToAction("Index");
+            }
         }
 
         [HttpPost]
@@ -80,7 +105,7 @@ namespace Taskify.Controllers
             {
                 db.Tasks.Add(task);
                 db.SaveChanges();
-                return Redirect("/Projects/Show/" + task.ProjectId);   
+                return Redirect("/Projects/Show/" + task.ProjectId);
             }
             else
             {

@@ -11,6 +11,8 @@ namespace Taskify.Models
         [Required(ErrorMessage = "Continutul articolului este obligatoriu")]
         public string Description { get; set; }
         public string Status { get; set; } /*Not Started, In Progress, Completed*/
+
+
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 

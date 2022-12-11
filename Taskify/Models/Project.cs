@@ -7,7 +7,7 @@ namespace Taskify.Models
         [Key]
         public int Id { get; set; }
 
-        
+         
         [Required]
         public string Title { get; set; }
 
@@ -23,7 +23,7 @@ namespace Taskify.Models
 
         public virtual ICollection<Task>? Tasks { get; set; }
 
-        /*Echippa?*/
+        /*Echipa?*/
 
 
     }

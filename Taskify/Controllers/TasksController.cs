@@ -5,6 +5,7 @@ using Task = Taskify.Models.Task;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace Taskify.Controllers
 {
@@ -36,7 +37,7 @@ namespace Taskify.Controllers
 
         public IActionResult Show(int id)
         {
-            var task = db.Tasks.Include("Comments").Where(tsk => tsk.Id == id).First();
+            var task = db.Tasks.Include("Comments.User").Where(tsk => tsk.Id == id).First();
             return View(task);
         }
 
@@ -44,7 +45,8 @@ namespace Taskify.Controllers
 
         public IActionResult Show([FromForm] Comment comment)
         {
-            comment.Date = DateTime.Now;    
+            comment.Date = DateTime.Now;
+            comment.UserId = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
                 db.Comments.Add(comment);
@@ -64,7 +66,10 @@ namespace Taskify.Controllers
             Task task = db.Tasks.Include("Comments")
                                         .Where(tsk => tsk.Id == id)
                                         .First();
-
+            if (TempData.ContainsKey("message"))
+            {
+                ViewBag.Message = TempData["message"];
+            }
 
             return View(task);
 
@@ -75,7 +80,13 @@ namespace Taskify.Controllers
         {
             Task task = db.Tasks.Find(id);
 
-            if (ModelState.IsValid)
+            if(DateTime.Compare(requestTask.StartDate, requestTask.EndDate) >= 0)
+            {
+                TempData["message"] = "Data de inceput este dupa data de final!";
+                return Redirect("/Tasks/Edit/" + id);
+            }
+
+            if (ModelState.IsValid )
             {
                 task.Title = requestTask.Title;
                 task.Description = requestTask.Description;
