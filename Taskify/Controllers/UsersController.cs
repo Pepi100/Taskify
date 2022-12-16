@@ -29,7 +29,7 @@ namespace Taskify.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            
+
             ViewBag.Users = db.Users;
             if (TempData.ContainsKey("message"))
             {
@@ -37,20 +37,5 @@ namespace Taskify.Controllers
             }
             return View();
         }
-
-      
-
-       
-
-
-        
-
-        
-
-        
-
-
-
-
     }
 }

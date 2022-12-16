@@ -22,6 +22,7 @@ namespace Taskify.Models
 
 
         public virtual ICollection<Task>? Tasks { get; set; }
+        public virtual ICollection<UserProject>? UserProjects { get; set; }
 
         /*Echipa?*/
 

@@ -1,4 +1,5 @@
 /Taskify/.vs
 /Taskify/obj
 /Taskify/bin
-/Taskify/Data/Migrations
+/Taskify/Data/Migrations/
+/Taskify/Migrations/

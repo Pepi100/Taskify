@@ -155,5 +155,50 @@ namespace Taskify.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "User,Editor,Admin")]
+        public IActionResult Users(int id)
+        {
+            var userid = _userManager.GetUserId(User);
+            var users_search = db.Users.Where(a => 1 == 0);
+            var search = "";
+            // MOTOR DE CAUTARE
+            if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
+            {
+                // eliminam spatiile libere
+                search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
+                users_search = db.Users.Where(usn => usn.UserName
+                                                .Contains(search))
+                                                .OrderBy(a => a.UserName);
+            }
+
+            var users = db.UserProjects.Include("User").Where(user => user.ProjectId == id);
+            var project = db.Projects.Find(id);
+            ViewBag.Users = users;
+            ViewBag.Project = project;
+            ViewBag.AllUsers = users_search;
+            return View();
+        }
+        
+        [HttpPost]
+        public IActionResult Users(int id, [FromForm] UserProject requestUser)
+        {
+            var userid = _userManager.GetUserId(User);
+            var project = db.Projects.Find(id);
+            if (userid == project.UserId || User.IsInRole("Admin"))
+            {
+                UserProject userProject = new UserProject();
+                userProject.ProjectId = id;
+                userProject.UserId = requestUser.UserId;
+                db.UserProjects.Add(userProject);
+                db.SaveChanges();
+                return Redirect("/Projects/Users/" + project.Id);
+            }
+            else
+            {
+                TempData["message"] = "Error! Nu ai acces";
+                ViewBag.Message = TempData["message"];
+                return RedirectToAction("Index");
+            }
+        }
     }
 }

@@ -2,7 +2,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Show projects</h2>
+<h2 class="display-2 text-center">My projects:</h2>
 <br />
 @if (ViewBag.Message != null)
 {
@@ -16,6 +16,13 @@
 </div>
 
 <br />
+
+@if (ViewBag.Projects ==  null)
+{
+    <h3 class= "display-4 text-center">There are no projects to display. Would you like to add one?</h3>
+
+
+}
 
 
 @foreach (Taskify.Models.Project project in ViewBag.Projects)
@@ -35,7 +42,7 @@
             </div>
         </div>
         
-        <a class="btn btn-success" href="/Projects/Show/@project.Id">Show Proejct</a>
+        <a class="btn btn-success" href="/Projects/Show/@project.Id">Show Project</a>
     
 
     </div>
