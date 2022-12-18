@@ -1,14 +1,13 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager
+﻿@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager
 
+<div class="d-flex justify-content-center">
 
+    <a class="btn btn-outline-success" href="/Projects/Show/@ViewBag.Project.Id">Back to project</a>
 
+</div>
 
 <h2 class="text-center mt-5">Users in this project:</h2>
 <br />
-
 
 @foreach (var user in ViewBag.Users)
 {
@@ -16,9 +15,14 @@
          
 
         <div class="card-body">
+            @if (user.UserId == ViewBag.Project.UserId)
+            {
+                <h3 class="card-title alert-success py-3 px-3 rounded-2">@user.User.Email</h3>
+                <small>Owner</small>
+            }else{
 
-            <h3 class="card-title alert-info py-3 px-3 rounded-2">@user.User.Email</h3>
-
+                <h3 class="card-title alert-info py-3 px-3 rounded-2">@user.User.Email</h3>
+            }
             <div class="card-text">rol</div>
             
         </div>
@@ -31,7 +35,8 @@
     <br />
 }
 
-@if(_userManager.GetUserId(User) == ViewBag.Project.UserId){
+@if (_userManager.GetUserId(User) == ViewBag.Project.UserId || User.IsInRole("Admin"))
+{
         <h3>Search </h3>
 
      <form method="GET">
@@ -46,7 +51,7 @@
 
 
     @foreach (Taskify.Models.ApplicationUser user in ViewBag.AllUsers)
-{
+    {
     <div class="card">
          
 
@@ -69,6 +74,6 @@
 
     <br />
     <br />
-}
+    }
 
 }
