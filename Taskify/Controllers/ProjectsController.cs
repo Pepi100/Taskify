@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using Taskify.Data;
@@ -57,17 +58,22 @@ namespace Taskify.Controllers
         {
             Project project = new Project();
             return View(project);
-            /*de adaugat id user organiser*/
         }
 
         [HttpPost]
-        public IActionResult New(Project project)
+        public async Task<IActionResult> NewAsync(Project project)
         {
-            project.UserId = _userManager.GetUserId(User);
+            var user_id = _userManager.GetUserId(User);
             if (ModelState.IsValid)
             {
-                db.Projects.Add(project);
-                db.SaveChanges();
+                project.UserId = user_id;   
+                UserProject project_data = new UserProject();
+                project_data.UserId = user_id;
+                project_data.ProjectId = project.Id;
+                project_data.Project = project;
+                
+                db.UserProjects.Add(project_data);
+                await db.SaveChangesAsync();
                 TempData["message"] = "The project wad added";
                 return RedirectToAction("Index");
             }
@@ -159,19 +165,23 @@ namespace Taskify.Controllers
         public IActionResult Users(int id)
         {
             var userid = _userManager.GetUserId(User);
+            ///de verificat ca userul in sesiune sa fie in cadrul proiectului
             var users_search = db.Users.Where(a => 1 == 0);
+            var users = db.UserProjects.Include("User").Where(user => user.ProjectId == id);
+            List<string> users_ids = users.Select(c => c.UserId).ToList();
             var search = "";
             // MOTOR DE CAUTARE
             if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
             {
-                // eliminam spatiile libere
                 search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
-                users_search = db.Users.Where(usn => usn.UserName
-                                                .Contains(search))
-                                                .OrderBy(a => a.UserName);
+                users_search = db.Users.Where(usn => usn.UserName.Contains(search) && 
+                                                    !users_ids.Contains(usn.Id))
+                                        .OrderBy(a => a.UserName);/*
+                users_search = db.Users.Where(usn => usn.UserName.Contains(search))
+                                        .OrderBy(a => a.UserName);*/
+
             }
 
-            var users = db.UserProjects.Include("User").Where(user => user.ProjectId == id);
             var project = db.Projects.Find(id);
             ViewBag.Users = users;
             ViewBag.Project = project;

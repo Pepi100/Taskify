@@ -29,8 +29,9 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
-  background-color: var(--background);
+    margin-bottom: 60px;
+    background-image: url('../images/fundal.jpg');
+    /*background-color: var(--background);*/
 }
 
 nav{
