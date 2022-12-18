@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <None Remove="Controllers\NewFile.txt" />
+    <None Remove="Models\NewFile1.txt" />
     <None Remove="Views\Home\NewFile.txt" />
     <None Remove="Views\Users\NewFile.txt" />
   </ItemGroup>
@@ -23,6 +24,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Migrations\" />
   </ItemGroup>
 
 </Project>
