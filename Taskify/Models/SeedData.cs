@@ -37,7 +37,9 @@ namespace Taskify.Models
                     new ApplicationUser
                     {
                         Id = "8e445865-a24d-4543-a6c6-9443d048cdb0",
-                        // primary key
+                        FirstName = "MyAdmin",
+                        LastName = "Admin",
+                        ProfilePicture = null,
                         UserName = "admin@test.com",
                         EmailConfirmed = true,
                         NormalizedEmail = "ADMIN@TEST.COM",
@@ -49,7 +51,9 @@ namespace Taskify.Models
                    {
 
                        Id = "8e445865-a24d-4543-a6c6-9443d048cdb1",
-                       // primary key
+                       FirstName = "MyOrganiser",
+                       LastName = "Organiser",
+                       ProfilePicture = null,
                        UserName = "organiser@test.com",
                        EmailConfirmed = true,
                        NormalizedEmail = "ORGANISER@TEST.COM",
@@ -60,7 +64,9 @@ namespace Taskify.Models
                     new ApplicationUser
                     {
                         Id = "8e445865-a24d-4543-a6c6-9443d048cdb2",
-                        // primary key
+                        FirstName = "MyUser",
+                        LastName = "User",
+                        ProfilePicture = null,
                         UserName = "user@test.com",
                         EmailConfirmed = true,
                         NormalizedEmail = "USER@TEST.COM",
