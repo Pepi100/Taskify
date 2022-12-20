@@ -48,3 +48,15 @@ nav .nav-item:hover{
 
     color:var(--white);
 }
+
+/* custom style */
+.profile-picture{
+    height: 250px;
+    width: 250px;
+    object-fit: cover;
+}
+
+.avatar{
+    height: 40px;
+    width: 40px;
+}
