@@ -1,5 +1,11 @@
 ﻿@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager
 
+@if (ViewBag.Message != null)
+{
+    <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+}
+<br/>
+
 <div class="d-flex justify-content-center">
 
     <a class="btn btn-outline-success" href="/Projects/Show/@ViewBag.Project.Id">Back to project</a>
@@ -22,6 +28,13 @@
             }else{
 
                 <h3 class="card-title alert-info py-3 px-3 rounded-2">@user.User.Email</h3>
+                @if (_userManager.GetUserId(User) == ViewBag.Project.UserId || User.IsInRole("Admin")
+               || _userManager.GetUserId(User) == user.UserId)
+                {
+                    <form method="post" action="/Projects/UserDelete/@user.Id/@user.UserId/@user.ProjectId">
+                        <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Remove User</button>
+                    </form>
+                }
             }
             <div class="card-text">rol</div>
             
