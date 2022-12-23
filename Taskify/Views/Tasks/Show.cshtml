@@ -43,59 +43,63 @@
 <br />
 
 @* Afisare tskuri impreuna cu butoanele de editare si stergere *@
-
-@foreach (var comm in Model.Comments)
+@if (Model.Comments is not null)
 {
-    <div class="container">
-        <div class="row">
-            <div class="col-md-2"></div>
+    @foreach (var comm in Model.Comments)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2"></div>
 
-            <div class="col-md-8">
-
-                <div>
-
-                    <p>@comm.Content</p>
-                    <small>@comm.Date</small><br />
-                    <small>@comm.User.UserName</small><br />
-
-                </div>
-                <br>
-                @if(@comm.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
-                {
-                <div class="d-flex">
+                <div class="col-md-8">
 
                     <div>
 
-                        <a class="btn btn-outline-primary" href="/Comments/Edit/@comm.Id"><i class="bi bi-pencil-square"></i>Edit Comment</a>
+                        <p>@comm.Content</p>
+                        <small>@comm.Date</small><br />
+                        @if (comm.User is not null)
+                        {
+                            <small>@comm.User.UserName</small><br />
+                        }
 
                     </div>
+                    <br>
+                    @if (@comm.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                    {
+                        <div class="d-flex">
+
+                            <div>
+
+                                <a class="btn btn-outline-primary" href="/Comments/Edit/@comm.Id"><i class="bi bi-pencil-square"></i>Edit Comment</a>
+
+                            </div>
 
 
-                  
-                    <div>
-                        
-                        <form method="post" action="/Comments/Delete/@comm.Id">
 
-                            <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Delete Comment</button>
+                            <div>
 
-                        </form>
+                                <form method="post" action="/Comments/Delete/@comm.Id">
 
-                    </div>
-                   
+                                    <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Delete Comment</button>
+
+                                </form>
+
+                            </div>
+
+                        </div>
+                    }                
+
+                    <br />
+
                 </div>
-                }                
 
-                <br />
+                <div class="col-md-2"></div>
 
             </div>
 
-            <div class="col-md-2"></div>
-
         </div>
-
-    </div>
+    }
 }
-
 
 @* Afisarea formularului in care se poate adauga un comentariu *@
 

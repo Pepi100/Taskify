@@ -1,4 +1,5 @@
 ﻿@model Taskify.Models.Project
+@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager
 
 
 <div class="d-flex justify-content-center">
@@ -21,8 +22,10 @@
 
         <div class="card-text">@Model.Description</div>
         <div class="d-flex justify-content-between flex-row mt-5">
-
-            <div><i class="bi bi-globe"></i>@Model.User.UserName</div>
+            @if (Model.User is not null)
+            {
+                <div><i class="bi bi-globe"></i>@Model.User.UserName</div>
+            }
 
         </div>
 
@@ -31,15 +34,15 @@
     
 
     <div class="d-flex flex-row justify-content-between">
-
+        @if (Model.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+        {
         <a class="btn btn-success" href="/Projects/Edit/@Model.Id">Edit project info</a>
-
-        <form method="post" action="/Projects/Delete/@Model.Id">
+            <form method="post" action="/Projects/Delete/@Model.Id">
 
             <button class="btn btn-danger" type="submit"><i class="bi bi-trash"></i></button>
 
         </form>
-
+        }
         <a class="btn btn-success" href="/Projects/Users/@Model.Id">Users</a>
 
     </div>
@@ -50,60 +53,66 @@
 <br />
 
 @* Afisare tskuri impreuna cu butoanele de editare si stergere *@
-
-@foreach (var task in Model.Tasks)
+@if (Model.Tasks is not null)
 {
-    <div class="container">
-        <div class="row">
-            <div class="col-md-2"></div>
+    @foreach (var task in Model.Tasks)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2"></div>
 
-            <div class="col-md-8">
+                <div class="col-md-8">
 
-                <div>
+                    <div>
 
-                    <p>@task.Title</p>
-                    <small>@task.Status</small><br/>
-                    <small>@task.User.UserName</small>
+                        <p>@task.Title</p>
+                        <small>@task.Status</small><br/>
+                        @if (task.User is not null)
+                        {
+                            <small>@task.User.UserName</small>
+                        }
+                    </div>
+                    <br>
+
+                    <div class="d-flex">
+
+                        <div>
+
+                            <a class="btn btn-outline-primary" href="/Tasks/Edit/@task.Id"><i class="bi bi-pencil-square"></i>Edit task</a>
+
+                        </div>
+
+                        <div>
+                            @if (Model.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                            {
+                                <form method="post" action="/Tasks/Delete/@task.Id">
+
+                                    <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Delete Task</button>
+
+                                </form>
+                            }
+                        </div>
+                        <div>
+                            <a class="btn btn-success" href="/Tasks/Show/@task.Id">Show Task</a>
+                    </div>
+                        <br/>
+                    </div>
+
+                    <br />
 
                 </div>
-                <br>
 
-                <div class="d-flex">
-
-                    <div>
-
-                        <a class="btn btn-outline-primary" href="/Tasks/Edit/@task.Id"><i class="bi bi-pencil-square"></i>Edit task</a>
-
-                    </div>
-
-                    <div>
-
-                        <form method="post" action="/Tasks/Delete/@task.Id">
-
-                            <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Delete Task</button>
-
-                        </form>
-
-                    </div>
-                    <div>
-                        <a class="btn btn-success" href="/Tasks/Show/@task.Id">Show Task</a
-                    </div>
-                    <br/>
-                </div>
-
-                <br />
+                <div class="col-md-2"></div>
 
             </div>
 
-            <div class="col-md-2"></div>
-
         </div>
-
-    </div>
+    }
 }
 
-
 @* Afisarea formularului in care se poate adauga un task *@
+@if(Model.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+{
 
 <div class="container">
 
@@ -158,3 +167,4 @@
     </div>
 
 </div>
+}
