@@ -1,15 +1,28 @@
 
-:root {
-    --dark-blue: #2b6777;
-    --light-blue: c8d8e4;
-    --white: #ffffff;
-    --light-grey: #f2f2f2;
-    --teal: #52ab98;
 
+
+:root {
+    /*
+        Navy: #141850
+        Lilac: #303179
+        Coral: #ed7966
+        Pale pink: #f5cac2
+        Beige: #fae5df
+        Grey: #e9e9f1
+        White: #ffffff
+
+
+    */
+
+    --Navy: #141850;
+    --Lilac: #303179;
+    --Coral: #ed7966;
+    --Pale pink: #f5cac2;
+    --Beige: #fae5df;
+    --Grey: #808080;
+    --White: #ffffff;
     --background: var(--light-grey);
     --main-color: var(--teal);
-    
-    
 }
 
 
@@ -34,29 +47,41 @@ body {
     /*background-color: var(--background);*/
 }
 
-nav{
-    background-color:var(--main-color);
-}
 
 
-nav ul li a {
-    color: var(--light-grey);
-    transition: color 2s ease-out 100ms;
-}
 
-nav .nav-item:hover{
 
-    color:var(--white);
-}
 
 /* custom style */
-.profile-picture{
+
+.navbar {
+    background-color: var(--White);
+    font-size: 16px;
+    font-family: Roboto Mono;
+    font-weight: 400;
+}
+    .navbar .container-fluid .navbar-collapse .navbar-nav .nav-item .nav-link {
+        color: var(--Grey);
+        opacity: 100%;
+        transition: all 0.5s ease-in-out;
+    }
+
+
+.navbar .container-fluid .navbar-collapse .navbar-nav .nav-item .nav-link:hover {
+    color: var(--Coral);
+    font-weight:500;
+    
+}
+
+
+.navbar-nav .dropdown .nav-link {
+    background-color: rgba(0, 0, 0, 0);
+    border:0;
+    padding:0;
+}
+
+.profile-picture {
     height: 250px;
     width: 250px;
     object-fit: cover;
-}
-
-.avatar{
-    height: 40px;
-    width: 40px;
 }
