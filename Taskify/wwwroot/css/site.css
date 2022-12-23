@@ -21,8 +21,7 @@
     --Beige: #fae5df;
     --Grey: #808080;
     --White: #ffffff;
-    --background: var(--light-grey);
-    --main-color: var(--teal);
+    
 }
 
 
@@ -43,8 +42,8 @@ html {
 
 body {
     margin-bottom: 60px;
-    background-image: url('../images/fundal.jpg');
-    /*background-color: var(--background);*/
+    background-color: var(--White);
+    
 }
 
 

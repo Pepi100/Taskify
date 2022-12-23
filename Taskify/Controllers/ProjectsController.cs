@@ -34,8 +34,20 @@ namespace Taskify.Controllers
             var userid = _userManager.GetUserId(User);
             var projs = db.UserProjects.Where(userpr => userpr.UserId == userid).Select(c => c.ProjectId);
             List<int?> proj_ids = projs.ToList();
+
             var projects = db.Projects.Include("User").Where(proj => proj_ids.Contains(proj.Id));
-            ViewBag.Projects = projects;
+
+            if(!projects.Any())
+            {
+                ViewBag.Projects = 0;
+            }
+            else
+            {
+                ViewBag.Projects = projects;
+            }
+            
+            
+            
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];

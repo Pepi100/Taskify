@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Taskify.Data;
 using Taskify.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 //Program.cs este fisierul care se executa prima data in cadrul aplicatiei
 
@@ -38,6 +39,8 @@ using (var scope = app.Services.CreateScope())
 }
 
 
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -50,6 +53,23 @@ else
     app.UseHsts();
 }
 
+//speram sa mearga sa facem erori
+app.Use(async (context, next) =>
+{
+
+    await next();
+
+    if(context.Response.StatusCode == 404)
+    {
+
+        context.Request.Path= "/Home/Error/404";
+        await next();
+    }
+}
+);
+
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -60,11 +80,13 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Projects}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Projects}/{action=UserDelete}/{id}/{rmvuser}/{rmvproject}");
 app.MapRazorPages();
+
+
 
 app.Run();
