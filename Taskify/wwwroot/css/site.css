@@ -17,10 +17,11 @@
     --Navy: #141850;
     --Lilac: #303179;
     --Coral: #ed7966;
-    --Pale pink: #f5cac2;
+    --Pale-pink: #f5cac2;
     --Beige: #fae5df;
     --Grey: #808080;
     --White: #ffffff;
+    --None: rgba(0,0,0,0);
     
 }
 
@@ -80,7 +81,45 @@ body {
 }
 
 .profile-picture {
-    height: 250px;
-    width: 250px;
+    height: 40px;
+    width: 40px;
     object-fit: cover;
 }
+
+
+.d-flex .btn {
+    font-size:20px;
+
+    height: auto;
+    width: auto;
+    transition: all 0.4s ease-out;
+    border-radius: 20px;
+    background-color: var(--Coral);
+    border: 2px solid var(--None);
+    color: var(--White);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.d-flex .btn:hover {
+    background-color: var(--White);
+    border: 2px solid var(--Coral);
+    color: var(--Coral);
+}
+
+
+/* ~~~~~~ Projects page ~~~~~~ */
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 3rem;
+}
+
+.projects-grid > a{
+    text-decoration:none;
+}
+
+
+   
+
+
