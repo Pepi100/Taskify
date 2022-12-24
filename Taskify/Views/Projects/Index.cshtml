@@ -28,33 +28,35 @@ else
     <h2 class="display-2 text-center">My projects:</h2>
     <br />
 
-    <div class="projects-grid">
-    @foreach (Taskify.Models.Project project in ViewBag.Projects)
-    {
-            
-            <a href="/Projects/Show/@project.Id">
-                <div class="card">
+    <div class="container">
+        <div class="row">
+        @foreach (Taskify.Models.Project project in ViewBag.Projects)
+        {
+
+                <a class="col-sm-6 col-md-4 col-lg-3" href="/Projects/Show/@project.Id">
+                    <div class="card">
 
 
-                    <div class="card-body">
+                        <div class="card-body">
 
-                        <h3 class="card-title alert-info py-3 px-3 rounded-2">@project.Title</h3>
+                            <h3 class="card-title alert-info py-3 px-3 rounded-2">@project.Title</h3>
 
-                        <div class="card-text">@project.Description</div>
-                        <div class="d-flex justify-content-between flex-row mt-5">
-                            @if (project.User is not null)
-                            {
-                                <div><i class="bi bi-person"></i>@project.User.UserName</div>
-                            }
+                            <div class="card-text">@project.Description</div>
+                            <div class="d-flex justify-content-between flex-row mt-5">
+                                @if (project.User is not null)
+                                {
+                                    <div><i class="bi bi-person"></i>@project.User.UserName</div>
+                                }
+                            </div>
                         </div>
+
+
+
+
                     </div>
-
-
-
-
-                </div>
-            </a>
-    }
+                </a>
+        }
+        </div>
 
     </div>
 }

@@ -57,8 +57,11 @@ body {
 .navbar {
     background-color: var(--White);
     font-size: 16px;
-    font-family: Roboto Mono;
+    font-family: 'Roboto';
     font-weight: 400;
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
     .navbar .container-fluid .navbar-collapse .navbar-nav .nav-item .nav-link {
         color: var(--Grey);
@@ -71,6 +74,10 @@ body {
     color: var(--Coral);
     font-weight:500;
     
+}
+
+header{
+    margin-bottom:60px;
 }
 
 
@@ -109,15 +116,21 @@ body {
 
 /* ~~~~~~ Projects page ~~~~~~ */
 
-.projects-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-gap: 3rem;
+
+.container > .row > a {
+    text-decoration: none;
+    margin:0;
+    padding:0.5rem;
 }
 
-.projects-grid > a{
-    text-decoration:none;
+
+
+.container > .row > a > .card{
+    height:100%;
 }
+
+
+
 
 
    
