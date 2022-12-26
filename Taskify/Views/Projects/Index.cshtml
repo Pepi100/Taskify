@@ -1,55 +1,84 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Projects";
 }
 
-<h2 class="display-2 text-center">My projects:</h2>
-<br />
+
 @if (ViewBag.Message != null)
 {
     <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
 }
 
 
-<div class="d-flex justify-content-center">
-    <a class="btn btn-outline-success" href="/Projects/New">Add a project</a>
-    <br />
-</div>
 
-<br />
 
-<br />
 
-@if (ViewBag.Projects ==  null)
+
+
+
+@if (ViewBag.Projects is int)
 {
     <h3 class= "display-4 text-center">There are no projects to display. Would you like to add one?</h3>
-
-
-}
-
-
-@foreach (Taskify.Models.Project project in ViewBag.Projects)
-{
-    <div class="card">
-
-
-        <div class="card-body">
-
-            <h3 class="card-title alert-info py-3 px-3 rounded-2">@project.Title</h3>
-
-            <div class="card-text">@project.Description</div>
-            <div class="d-flex justify-content-between flex-row mt-5">
-                @if(project.User is not null)
-                {
-                    <div><i class="bi bi-person"></i>@project.User.UserName</div>
-                }
-            </div>
-        </div>
-        
-        <a class="btn btn-success" href="/Projects/Show/@project.Id">Show Project</a>
-    
-
+    <br />
+    <div class="d-flex justify-content-center">
+        <a class="btn" href="/Projects/New">Add a project!</a>
     </div>
 
-    <br />
-    <br />
 }
+else
+{
+    
+    <div class="container">
+        <div class="row justify-content-between">
+   
+
+            <nav class=" menu-navbar navbar-expand-lg  col-2">
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+  
+                <form class="form-inline my-2 my-lg-0">
+                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+              </div>
+            </nav>
+
+            <div class="container projects-container col">
+                <div class="row">
+                @foreach (Taskify.Models.Project project in ViewBag.Projects)
+                {
+
+                        <a class=" card justify-content-center col-sm-6 col-md-4 col-lg-3 " href="/Projects/Show/@project.Id">
+                    
+
+
+                                <div class="card-body justify-content-center">
+                                    <i class="bi bi-journal-bookmark-fill"></i>
+
+                                    <div class="prog-title">@project.Title</div>
+
+                                   @* <div class="card-text">@project.Description</div>*@
+                                    @*<div class="d-flex justify-content-between flex-row mt-5">
+                                        @if (project.User is not null)
+                                        {
+                                            <div><i class="bi bi-person"></i>@project.User.UserName</div>
+                                        }
+                                    </div>*@
+                                </div>
+
+
+
+
+               
+                        </a>
+                }
+                </div>
+
+            </div>
+
+
+     </div>
+    </div>
+}
+
+
+    
+

@@ -17,12 +17,12 @@
     --Navy: #141850;
     --Lilac: #303179;
     --Coral: #ed7966;
-    --Pale pink: #f5cac2;
+    --Pale-pink: #f5cac2;
     --Beige: #fae5df;
     --Grey: #808080;
     --White: #ffffff;
-    --background: var(--light-grey);
-    --main-color: var(--teal);
+    --None: rgba(0,0,0,0);
+    
 }
 
 
@@ -43,8 +43,8 @@ html {
 
 body {
     margin-bottom: 60px;
-    background-image: url('../images/fundal.jpg');
-    /*background-color: var(--background);*/
+    background-color: var(--White);
+    
 }
 
 
@@ -54,11 +54,28 @@ body {
 
 /* custom style */
 
+.row {
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    padding: 0;
+    margin: 0;
+}
+
+
+
+
 .navbar {
     background-color: var(--White);
     font-size: 16px;
-    font-family: Roboto Mono;
+    font-family: 'Roboto';
     font-weight: 400;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1100; /* bring navbar to front*/
 }
     .navbar .container-fluid .navbar-collapse .navbar-nav .nav-item .nav-link {
         color: var(--Grey);
@@ -67,10 +84,14 @@ body {
     }
 
 
-.navbar .container-fluid .navbar-collapse .navbar-nav .nav-item .nav-link:hover {
-    color: var(--Coral);
-    font-weight:500;
+        .navbar .container-fluid .navbar-collapse .navbar-nav .nav-item .nav-link:hover {
+            color: var(--Coral);
+   
     
+        }
+
+header{
+    margin-bottom:60px;
 }
 
 
@@ -81,11 +102,108 @@ body {
 }
 
 .profile-picture {
-    height: 250px;
-    width: 250px;
+    height: 40px;
+    width: 40px;
     object-fit: cover;
 }
+
+
+
+.d-flex .btn {
+    font-size:20px;
+
+    height: auto;
+    width: auto;
+    transition: all 0.4s ease-out;
+    border-radius: 20px;
+    background-color: var(--Coral);
+    border: 2px solid var(--None);
+    color: var(--White);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.d-flex .btn:hover {
+    background-color: var(--White);
+    border: 2px solid var(--Coral);
+    color: var(--Coral);
+}
+
+
+/* ~~~~~~ Projects page ~~~~~~ */
+
+
+.projects-container {
+    font-family: 'Roboto';
+    font-weight: 400;
+    text-align:center;
+
+
+}
+
+    .projects-container > .row > a {
+        text-decoration: none;
+        margin: 25px;
+        padding: 0;
+        height: 200px;
+        width: 200px;
+
+        border:0;
+        
+        
+        
+    }
+        .projects-container > .row > a > .card-body {
+            padding: 0;
+            margin: 0;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid var(--Grey);
+            border-radius: 1rem;
+        }
+
+    .projects-container > .row > a > .card-body > .bi {
+        font-size: 5vh;
+        color: var(--Navy);
+        margin: 0;
+        padding:0;
+    }
+
+            .projects-container > .row > a > .card-body > .prog-title {
+                border: 1px solid var(--Grey);
+                width: 100%;
+                height: 20%;
+                color: var(--Navy);
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                text-align: center;
+                line-height: 40px;
+                transition: all 0.4s ease-in-out;
+                border-radius: 0rem 0rem 1rem 1rem;
+            }
+
+        .projects-container > .row > a:hover > .card-body > .prog-title {
+            
+            background-color:var(--Pale-pink);
+            
+            
+        }
+
+/* Projects navbar*/
+
+.menu-navbar {
+    
+    height: 100vh;
+    
+    left:0;
+
+}
+
+
+
+
 
 .hide{
     display: none;
 }
+
