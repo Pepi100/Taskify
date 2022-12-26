@@ -29,8 +29,8 @@
     <li class="dropdown">
             <button class="nav-link" type="button" id="dropdownMenu2" data-bs-toggle="dropdown" aria-expanded="false">
           @if(UserManager.GetUserAsync(User).Result.ProfilePicture != null){
-            
-                <img class="avatar rounded-circle" alt="profile" class="profile-picture" src="data:image/*;base64,@(Convert.ToBase64String(UserManager.GetUserAsync(User).Result.ProfilePicture))" />
+
+                    <img class="avatar rounded-circle" height="40px" alt="profile" class="profile-picture" src="data:image/*;base64,@(Convert.ToBase64String(UserManager.GetUserAsync(User).Result.ProfilePicture))" />
 
 
     }else{

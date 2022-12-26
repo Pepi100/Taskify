@@ -51,13 +51,21 @@
 
 <br />
 <br />
+<div class="form-check form-switch">
+    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+    <label class="form-check-label" for="flexSwitchCheckDefault">Show only my tasks</label>
+</div>
+
+<div id="id_user_sesiune" class="hide">
+    @_userManager.GetUserId(User)
+</div>
 
 @* Afisare tskuri impreuna cu butoanele de editare si stergere *@
 @if (Model.Tasks is not null)
 {
     @foreach (var task in Model.Tasks)
     {
-        <div class="container">
+        <div class="container taskuri">
             <div class="row">
                 <div class="col-md-2"></div>
 
@@ -69,6 +77,9 @@
                         <small>@task.Status</small><br/>
                         @if (task.User is not null)
                         {
+                            <div class="hide id_user_task">
+                                @task.UserId
+                            </div>
                             <small>@task.User.UserName</small>
                         }
                     </div>
@@ -130,7 +141,7 @@
 
                         <input type="hidden" name="ProjectId" value="@Model.Id" />
 
-                        <input type="hidden" name="Status" value="Not Started" />
+                        <input type="hidden" name="Status" value="not started" />
 
                         <label>Task info</label>
                         <br />

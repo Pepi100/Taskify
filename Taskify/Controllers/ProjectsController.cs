@@ -34,7 +34,7 @@ namespace Taskify.Controllers
             var userid = _userManager.GetUserId(User);
             var projs = db.UserProjects.Where(userpr => userpr.UserId == userid).Select(c => c.ProjectId);
             List<int?> proj_ids = projs.ToList();
-            var projects = db.Projects.Include("User").Where(proj => proj_ids.Contains(proj.Id));
+            var projects = db.Projects.Include("User").Where(proj => proj_ids.Contains(proj.Id)).OrderBy(c => c.Title);
             ViewBag.Projects = projects;
             if (TempData.ContainsKey("message"))
             {
@@ -93,6 +93,7 @@ namespace Taskify.Controllers
             var users = db.UserProjects.Where(userpr => userpr.ProjectId == id).Select(c => c.UserId);
             List<string?> user_ids = users.ToList();
             var project = db.Projects.Include("Tasks.User").Include("User").Where(proj => proj.Id == id).First();
+            ///ar merge sortat dupa task... how?
             if (user_ids.Contains(userid) || User.IsInRole("Admin"))
             {
                 return View(project);
@@ -106,12 +107,10 @@ namespace Taskify.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "User,Admin")]
 
         public IActionResult Show([FromForm] Task task)
         {
-            task.UserId = _userManager.GetUserId(User);
-
-
             if (ModelState.IsValid)
             {
                 db.Tasks.Add(task);
@@ -144,6 +143,7 @@ namespace Taskify.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "User,Admin")]
         public IActionResult Edit(int id, Project requestProject)
         {   
             Project project = db.Projects.Find(id);
@@ -155,35 +155,55 @@ namespace Taskify.Controllers
             }
             else
             {
-                if (ModelState.IsValid)
+                var userid = _userManager.GetUserId(User);
+                if (project.UserId == userid || User.IsInRole("Admin"))
                 {
-                    project.Title = requestProject.Title;
-                    project.Description = requestProject.Description;
-                    TempData["message"] = "Proiectul a fost modificat";
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    if (ModelState.IsValid)
+                    {
+                        project.Title = requestProject.Title;
+                        project.Description = requestProject.Description;
+                        TempData["message"] = "Proiectul a fost modificat";
+                        db.SaveChanges();
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        return View(requestProject);
+                    }
                 }
                 else
                 {
-                    return View(requestProject);
+                    TempData["message"] = "Error! Nu ai acces";
+                    ViewBag.Message = TempData["message"];
+                    return RedirectToAction("Index");
                 }
             }
-            
         }
 
         [HttpPost]
+        [Authorize(Roles = "User,Admin")]
         public ActionResult Delete(int id)
         {
-            Project project = db.Projects.Find(id);
+            Project project = db.Projects.Include("Tasks.Comments").Where(proj => proj.Id == id).First();
             if(project == null)
             {
                 TempData["message"] = "Database error!";
             }
             else
             {
-                db.Projects.Remove(project);
-                db.SaveChanges();
-                TempData["message"] = "Project has been deleted.";
+                var userid = _userManager.GetUserId(User);
+                if (project.UserId == userid || User.IsInRole("Admin"))
+                {
+                    db.Projects.Remove(project);
+                    db.SaveChanges();
+                    TempData["message"] = "Project has been deleted.";
+                }
+                else
+                {
+                    TempData["message"] = "Error! Nu ai acces";
+                    ViewBag.Message = TempData["message"];
+                    return RedirectToAction("Index");
+                }
             }
             return RedirectToAction("Index");
         }
@@ -192,31 +212,39 @@ namespace Taskify.Controllers
         public IActionResult Users(int id)
         {
             var userid = _userManager.GetUserId(User);
-            ///de verificat ca userul in sesiune sa fie in cadrul proiectului
-            var users_search = db.Users.Where(a => 1 == 0);
             var users = db.UserProjects.Include("User").Where(user => user.ProjectId == id);
             List<string?> users_ids = users.Select(c => c.UserId).ToList();
-            var search = "";
-            // MOTOR DE CAUTARE
-            if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
+            if (users_ids.Contains(userid) || User.IsInRole("Admin"))
             {
-                search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
-                users_search = db.Users.Where(usn => usn.UserName.Contains(search) && 
-                                                    !users_ids.Contains(usn.Id))
-                                        .OrderBy(a => a.UserName);/*
-                users_search = db.Users.Where(usn => usn.UserName.Contains(search))
-                                        .OrderBy(a => a.UserName);*/
 
+                var users_search = db.Users.Where(a => 1 == 0);
+                var search = "";
+                // MOTOR DE CAUTARE
+                if (Convert.ToString(HttpContext.Request.Query["search"]) != null)
+                {
+                    search = Convert.ToString(HttpContext.Request.Query["search"]).Trim();
+                    users_search = db.Users.Where(usn => usn.UserName.Contains(search) &&
+                                                        !users_ids.Contains(usn.Id) &&
+                                                        !usn.UserName.EndsWith("@test.com"))
+                                            .OrderBy(a => a.UserName);
+                }
+
+                var project = db.Projects.Find(id);
+                ViewBag.Users = users;
+                ViewBag.Project = project;
+                ViewBag.AllUsers = users_search;
+                return View();
             }
-
-            var project = db.Projects.Find(id);
-            ViewBag.Users = users;
-            ViewBag.Project = project;
-            ViewBag.AllUsers = users_search;
-            return View();
+            else
+            {
+                TempData["message"] = "Error! Nu ai acces";
+                ViewBag.Message = TempData["message"];
+                return RedirectToAction("Index");
+            }
         }
         
         [HttpPost]
+        [Authorize(Roles = "User,Admin")]
         public IActionResult Users(int id, [FromForm] UserProject requestUser)
         {
             var userid = _userManager.GetUserId(User);
@@ -247,30 +275,44 @@ namespace Taskify.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "User,Admin")]
         public ActionResult UserDelete(int id, string rmvuser, int rmvproject)
         {
-            UserProject user_project = db.UserProjects.Find(id, rmvuser, rmvproject);
-            var project_id = user_project.ProjectId;
-            if (user_project == null)
+            var userid = _userManager.GetUserId(User);
+            var users = db.UserProjects.Include("User").Where(user => user.ProjectId == rmvproject);
+            List<string?> users_ids = users.Select(c => c.UserId).ToList();
+            if ((users_ids.Contains(userid) && (rmvuser == userid || users_ids.Contains(userid))) 
+                    || User.IsInRole("Admin"))
             {
-                TempData["message"] = "Database error!";
-                return Redirect("/Projects/Users/" + project_id);
-            }
-            else
-            {
-                db.UserProjects.Remove(user_project);
-                db.SaveChanges();
-                if(user_project.UserId == _userManager.GetUserId(User))
+                UserProject user_project = db.UserProjects.Find(id, rmvuser, rmvproject);
+                var project_id = user_project.ProjectId;
+                if (user_project == null)
                 {
-                    TempData["message"] = "You have left the project.";
-                    return RedirectToAction("Index");
-
+                    TempData["message"] = "Database error!";
+                    return Redirect("/Projects/Users/" + project_id);
                 }
                 else
                 {
-                    TempData["message"] = "User has been removed.";
-                    return Redirect("/Projects/Users/" + project_id);
+                    db.UserProjects.Remove(user_project);
+                    db.SaveChanges();
+                    if (user_project.UserId == _userManager.GetUserId(User))
+                    {
+                        TempData["message"] = "You have left the project.";
+                        return RedirectToAction("Index");
+
+                    }
+                    else
+                    {
+                        TempData["message"] = "User has been removed.";
+                        return Redirect("/Projects/Users/" + project_id);
+                    }
                 }
+            }
+            else
+            {
+                TempData["message"] = "Error! Nu ai acces";
+                ViewBag.Message = TempData["message"];
+                return RedirectToAction("Index");
             }
         }
     }

@@ -24,19 +24,12 @@ namespace Taskify.Controllers
             _roleManager = roleManager;
         }
 
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-
         public IActionResult Edit(int id)
         {
 
-            Comment comment = db.Comments.Where(comm=> comm.Id == id).First();
+            Comment comment = db.Comments.Include("Task.Project").Where(comm=> comm.Id == id).First();
             var userid = _userManager.GetUserId(User);
-            if (comment.UserId == userid || User.IsInRole("Admin"))
+            if (comment.UserId == userid || User.IsInRole("Admin") || comment.Task.Project.UserId == userid)
             {
                 return View(comment);
             }
@@ -44,7 +37,7 @@ namespace Taskify.Controllers
             {
                 TempData["message"] = "Error! Nu ai acces";
                 ViewBag.Message = TempData["message"];
-                return Redirect("/Tasks/Show/" + comment.TaskId);
+                return Redirect("/Projects/Index");
 
             }
         }
@@ -52,46 +45,58 @@ namespace Taskify.Controllers
         [HttpPost]
         public IActionResult Edit(int id, Comment requestComment)
         {
-            Comment comm = db.Comments.Find(id);
-            
-            if (ModelState.IsValid)
+            Comment comment = db.Comments.Include("Task.Project").Where(comm => comm.Id == id).First();
+            var userid = _userManager.GetUserId(User);
+            if (comment.UserId == userid || User.IsInRole("Admin") || comment.Task.Project.UserId == userid)
             {
-                comm.Content = requestComment.Content;
-                comm.Date = DateTime.Now;
-                
-                TempData["message"] = "Comentariul a fost modificat";
-                db.SaveChanges();
-                return Redirect("/Tasks/Show/" + comm.TaskId);
+
+                if (ModelState.IsValid)
+                {
+                    Comment comm = db.Comments.Find(id);
+                    comm.Content = requestComment.Content;
+                    comm.Date = DateTime.Now;
+
+                    TempData["message"] = "Comentariul a fost modificat";
+                    db.SaveChanges();
+                    return Redirect("/Tasks/Show/" + comm.TaskId);
+                }
+                else
+                {
+                    return View(requestComment);
+                }
             }
             else
             {
-                return View(requestComment);
+                TempData["message"] = "Error! Nu ai acces";
+                ViewBag.Message = TempData["message"];
+                return Redirect("/Projects/Index");
             }
+
         }
 
 
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            Comment comm = db.Comments.Find(id);
+            Comment comment = db.Comments.Include("Task.Project").Where(comm => comm.Id == id).First();
             var userid = _userManager.GetUserId(User);
-            if (comm.UserId == userid)
+            if (comment.UserId == userid || User.IsInRole("Admin") || comment.Task.Project.UserId == userid)
             {
+                Comment comm = db.Comments.Find(id);
                 db.Comments.Remove(comm);
                 db.SaveChanges();
                 TempData["message"] = "Comentariul a fost sters";
+        
+                return Redirect("/Tasks/Show/" + comm.TaskId);
             }
             else
             {
                 TempData["message"] = "Error! Nu ai acces";
                 ViewBag.Message = TempData["message"];
+                return Redirect("/Projects/Index");
             }
-            return Redirect("/Tasks/Show/" + comm.TaskId);
-
 
         }
-
-
 
     }
 }
