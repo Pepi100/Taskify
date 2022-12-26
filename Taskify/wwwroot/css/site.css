@@ -108,6 +108,7 @@ header{
 }
 
 
+
 .d-flex .btn {
     font-size:20px;
 
@@ -202,6 +203,7 @@ header{
 
 
 
-   
-
+.hide{
+    display: none;
+}
 

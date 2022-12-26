@@ -7,6 +7,13 @@
 
 </div>
 
+@if (TempData["message"] != null)
+{
+    <div class="alert @TempData["messageType"]">
+        @TempData["message"]
+    </div>
+}
+
 <div class="card">
 
 
@@ -14,7 +21,9 @@
     <div class="card-body">
 
         <h3 class="card-title alert-success py-3 px-3 rounded-2">@Model.Title</h3>
-
+        @if(Model.User is not null){
+            <div class="card-text">@Model.User.UserName</div>
+        }
         <div class="card-text">@Model.Description</div>
         <div class="card-text">@Model.StartDate</div>
         <div class="card-text">@Model.EndDate</div>
@@ -22,9 +31,27 @@
 
 
     </div>
+    @if (Model.Project.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+    {
+    <form method="POST" asp-controller="Tasks" asp-action="AddUser">
+        <div class="d-flex flex-row justify-content-center p-3 border-1 border-top">
+            <div>
+                <input type="hidden" name="TaskId" value=@Model.Id />
+                <select name="UserId" class="form-control">
+                    <option selected>Add a user for this task</option>
+                    @foreach (var user in ViewBag.Users)
+                    {
+                        <option value=@user.UserId>@user.User.UserName</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <input type="submit" class="btn btn-success alert-success" value="+" />
+            </div>
+        </div>
+    </form>
 
-
-
+    
     <div class="d-flex flex-row justify-content-between">
 
         <a class="btn btn-success" href="/Tasks/Edit/@Model.Id">Edit task info</a>
@@ -36,6 +63,7 @@
         </form>
 
     </div>
+        }
 
 </div>
 
@@ -64,30 +92,34 @@
 
                     </div>
                     <br>
-                    @if (@comm.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                    @if (comm.Task.Project is not null)
                     {
-                        <div class="d-flex">
+                        @if (comm.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin")
+                                      || comm.Task.Project.UserId == _userManager.GetUserId(User))
+                        {
+                            <div class="d-flex">
 
-                            <div>
+                                <div>
 
-                                <a class="btn btn-outline-primary" href="/Comments/Edit/@comm.Id"><i class="bi bi-pencil-square"></i>Edit Comment</a>
+                                    <a class="btn btn-outline-primary" href="/Comments/Edit/@comm.Id"><i class="bi bi-pencil-square"></i>Edit Comment</a>
+
+                                </div>
+
+
+
+                                <div>
+
+                                    <form method="post" action="/Comments/Delete/@comm.Id">
+
+                                        <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Delete Comment</button>
+
+                                    </form>
+
+                                </div>
 
                             </div>
-
-
-
-                            <div>
-
-                                <form method="post" action="/Comments/Delete/@comm.Id">
-
-                                    <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Delete Comment</button>
-
-                                </form>
-
-                            </div>
-
-                        </div>
-                    }                
+                        }
+                    }
 
                     <br />
 

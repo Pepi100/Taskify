@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Taskify.Models
 {
@@ -26,5 +28,7 @@ namespace Taskify.Models
 
         public virtual Project? Project { get; set; }
         public virtual ICollection<Comment>? Comments { get; set; }
+        [NotMapped]
+        public IEnumerable<SelectListItem>? Statuses { get; set; }
     }
 }
