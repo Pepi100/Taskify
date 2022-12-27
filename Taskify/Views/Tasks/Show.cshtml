@@ -33,38 +33,69 @@
     </div>
     @if (Model.Project.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
     {
-    <form method="POST" asp-controller="Tasks" asp-action="AddUser">
-        <div class="d-flex flex-row justify-content-center p-3 border-1 border-top">
-            <div>
-                <input type="hidden" name="TaskId" value=@Model.Id />
-                <select name="UserId" class="form-control">
-                    <option selected>Add a user for this task</option>
-                    @foreach (var user in ViewBag.Users)
-                    {
-                        <option value=@user.UserId>@user.User.UserName</option>
-                    }
-                </select>
+        <form method="POST" asp-controller="Tasks" asp-action="AddUser">
+            <div class="d-flex flex-row justify-content-center p-3 border-1 border-top">
+                <div>
+                    <input type="hidden" name="TaskId" value=@Model.Id />
+                    <select name="UserId" class="form-control">
+                        @if (Model.User is null)
+                        {
+                            <option selected>Add a user for this task</option>
+
+                            @foreach (var user in ViewBag.Users)
+                            {
+                                <option value=@user.UserId>@user.User.UserName</option>
+                            }
+                        }else{
+                            @foreach (var user in ViewBag.Users)
+                            {
+                                if (Model.UserId == user.UserId)
+                                {
+                                    <option selected value=@user.UserId>@user.User.UserName</option>
+                                }else{
+                                    <option value=@user.UserId>@user.User.UserName</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-success alert-success" value="+" />
+                </div>
             </div>
-            <div>
-                <input type="submit" class="btn btn-success alert-success" value="+" />
-            </div>
-        </div>
-    </form>
+        </form>
+        
 
     
-    <div class="d-flex flex-row justify-content-between">
+        <div class="d-flex flex-row justify-content-between">
 
-        <a class="btn btn-success" href="/Tasks/Edit/@Model.Id">Edit task info</a>
+            <a class="btn btn-success" href="/Tasks/Edit/@Model.Id">Edit task info</a>
 
-        <form method="post" action="/Tasks/Delete/@Model.Id">
+            <form method="post" action="/Tasks/Delete/@Model.Id">
 
-            <button class="btn btn-danger" type="submit">Delete task</button>
+                <button class="btn btn-danger" type="submit">Delete task</button>
 
-        </form>
+            </form>
 
-    </div>
+        </div>
+    }
+    <div class="d-flex flex-row justify-content-center p-3 border-1 border-top">
+
+        @using (Html.BeginForm(actionName: "ChangeStatus", controllerName: "Tasks",
+        method: FormMethod.Post,
+        routeValues: new { id = Model.Id }))
+        {
+            <input type="hidden" name="TaskId" value=@Model.Id />
+            @Html.Label("Status", "Task Status")
+            <br />
+            @Html.DropDownList("newStatus", new SelectList(Model.Statuses, "Value", "Text", ViewBag.CurrentStatus), null, new { @class = "form-control" })
+
+    
+            <div>
+                <input type="submit" class="btn btn-success alert-success" value="Modify status" />
+            </div>
         }
-
+    </div>
 </div>
 
 <br />

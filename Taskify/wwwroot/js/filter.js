@@ -1,6 +1,6 @@
 ﻿window.addEventListener("load", function () {
     var mytasks = document.getElementById("flexSwitchCheckDefault");
-
+    ///de sters console log
     mytasks.onchange = function () {
         let flag = false;
         if (mytasks.checked) {
