@@ -47,9 +47,11 @@ namespace Taskify.Controllers
             var task = db.Tasks.Include("Comments.User").Include("User").Include("Project")
                                 .Where(tsk => tsk.Id == id).First();
             ViewBag.Users = db.UserProjects.Include("User")
-                .Where(c => c.ProjectId == task.ProjectId);
+                .Where(c => c.ProjectId == task.ProjectId); ///de sortat dupa nume .Select(c => c.UserId, c.User.UserName)
             if (CheckUser(task.ProjectId) || User.IsInRole("Admin"))
             {
+                task.Statuses = GetAllStatuses();
+                ViewBag.CurrentStatus = task.Status;
                 return View(task);
             }
             else
@@ -93,7 +95,7 @@ namespace Taskify.Controllers
             Task taskaux = db.Tasks.Include("Project").Where(a => a.Id == TaskId).First();
             if (userid == taskaux.Project.UserId || User.IsInRole("Admin"))
             {
-                if (ModelState.IsValid)
+                if (ModelState.IsValid && (userId != "Add a user for this task"))
                 {
                     if (db.Tasks
                         .Where(task => task.Id == TaskId && task.UserId == userId)
@@ -136,85 +138,126 @@ namespace Taskify.Controllers
                 return Redirect("/Projects/Index");
             }
         }
-        public IActionResult Edit(int id)
-        {
 
-            Task task = db.Tasks.Include("Comments")
-                                        .Where(tsk => tsk.Id == id)
-                                        .First();
-            task.Statuses = GetAllStatuses();
-            
-            if (TempData.ContainsKey("message"))
-            {
-                ViewBag.Message = TempData["message"];
-            }
-            ViewBag.CurrentStatus = task.Status;
-            return View(task);
-
-        }
-        [NonAction]
-        public IEnumerable<SelectListItem> GetAllStatuses()
+        [HttpPost]
+        public IActionResult ChangeStatus([FromForm] int TaskId, [FromForm] string newStatus)
         {
-            var statuses = new List<SelectListItem>();
-            string[] all_statuses = { "not started", "in progress", "completed" };
-            foreach (var status in all_statuses)
+            var userid = _userManager.GetUserId(User);
+            Task taskaux = db.Tasks.Where(a => a.Id == TaskId).First();
+            if (CheckUser(taskaux.ProjectId) || User.IsInRole("Admin"))
             {
-                string aux;
-                if (status.Length == 1)
+                if (ModelState.IsValid)
                 {
-                    aux = status.ToUpper();
+                    Task task = db.Tasks.Find(TaskId);
+                    if (task != null)
+                    {
+                        task.Status = newStatus;
+                        db.SaveChanges();
+
+                        TempData["message"] = "User added to task";
+                        TempData["messageType"] = "alert-success";
+                    }
+                    else
+                    {
+                        TempData["message"] = "Database error!";
+                        TempData["messageType"] = "alert-danger";
+                    }
                 }
                 else
                 {
-                    aux = char.ToUpper(status[0]) + status[1..];
+                    TempData["message"] = "Try again!";
+                    TempData["messageType"] = "alert-danger";
                 }
-                statuses.Add(new SelectListItem
-                {
-                    Value = status.ToLower(),
-                    Text = aux
-                });
-    
-            }
-            return statuses;
-        }
 
-        [HttpPost]
-        public IActionResult Edit(int id, Task requestTask, [FromForm] string newStatus)
+                return Redirect("/Tasks/Show/" + TaskId);
+            }
+            else
+            {
+                TempData["message"] = "Error! Nu ai acces";
+                ViewBag.Message = TempData["message"];
+                return Redirect("/Projects/Index");
+            }
+        }
+        public IActionResult Edit(int id)
         {
-            Task task = db.Tasks.Find(id);
+
+            Task task = db.Tasks.Include("Comments").Include("Project")
+                                        .Where(tsk => tsk.Id == id)
+                                        .First();
             if (task == null)
             {
                 TempData["message"] = "Database error!";
+                ViewBag.Message = TempData["message"];
+                return View("/Projects/Index");
+            }
+            else
+            {
+                if (task.Project.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                {
+                    if (TempData.ContainsKey("message"))
+                    {
+                        ViewBag.Message = TempData["message"];
+                    }
+                    ViewBag.CurrentStatus = task.Status;
+                    return View(task);
+                }
+                else
+                {
+                    TempData["message"] = "Error! Nu ai acces";
+                    ViewBag.Message = TempData["message"];
+                    return Redirect("/Projects/Index");
+                }
+            }
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, Task requestTask)
+        {
+            Task task = db.Tasks.Find(id);
+            
+            if (task == null)
+            {
+                TempData["message"] = "Database error!";
+                ViewBag.Message = TempData["message"];
                 return View(requestTask);
 
             }
             else
             {
-                if (DateTime.Compare(requestTask.StartDate, requestTask.EndDate) >= 0)
-                {
-                    TempData["message"] = "Data de inceput este dupa data de final!";
-                    return Redirect("/Tasks/Edit/" + id);
-                }
+                Task task_aux = db.Tasks.Include("Project").Where(c => c.Id == id).First();
 
-                if (ModelState.IsValid)
+                if (task_aux.Project.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
                 {
-                    task.Title = requestTask.Title;
-                    task.Description = requestTask.Description;
-                    task.Status = newStatus;
-                    task.StartDate = requestTask.StartDate;
-                    task.EndDate = requestTask.EndDate;
+                    if (DateTime.Compare(requestTask.StartDate, requestTask.EndDate) >= 0)
+                    {
+                        TempData["message"] = "Data de inceput este dupa data de final!";
+                        return Redirect("/Tasks/Edit/" + id);
+                    }
 
-                    TempData["message"] = "Taskul a fost modificat";
-                    db.SaveChanges();
-                    return Redirect("/Projects/Show/" + task.ProjectId);
+                    if (ModelState.IsValid)
+                    {
+                        task.Title = requestTask.Title;
+                        task.Description = requestTask.Description;
+                        task.StartDate = requestTask.StartDate;
+                        task.EndDate = requestTask.EndDate;
+
+                        TempData["message"] = "Task was updated!";
+                        db.SaveChanges();
+                        return Redirect("/Projects/Show/" + task.ProjectId);
+                    }
+                    else
+                    {
+                        return View(requestTask);
+                    }
                 }
-                else
+                else 
                 {
-                    ViewBag.CurrentStatus = newStatus;
-                    requestTask.Statuses = GetAllStatuses();
-                    return View(requestTask);
+                    TempData["message"] = "Error! Nu ai acces";
+                    ViewBag.Message = TempData["message"];
+                    return Redirect("/Projects/Index");
                 }
             }
+            
         }
 
         [HttpPost]
@@ -235,6 +278,38 @@ namespace Taskify.Controllers
                 ViewBag.Message = TempData["message"];
                 return Redirect("/Projects/Index");
             }
+        }
+
+        [NonAction]
+        public IEnumerable<SelectListItem> GetAllStatuses()
+        {
+            var statuses = new List<SelectListItem>();
+            string[] all_statuses = { "not started", 
+                                      "in progress", 
+                                      "completed" };
+            foreach (var status in all_statuses)
+            {
+                string aux;
+                if (status.Length == 1)
+                {
+                    aux = status.ToUpper();
+                }
+                else
+                {
+                    aux = char.ToUpper(status[0]) + status[1..];
+                }
+
+                statuses.Add(new SelectListItem
+                {
+                    Value = aux,
+                    Text = aux,
+
+                });
+               
+                
+
+            }
+            return statuses;
         }
     }
 }

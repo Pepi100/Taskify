@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager
 
 <ul class="navbar-nav">
 
@@ -45,8 +46,16 @@
         </li>
         <li>
             <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button  type="submit" class="dropdown-item">Logout</button>
+                <button  type="submit" class="dropdown-item">Logout</button>
             </form>
+        </li>
+        <li>
+                    @using (Html.BeginForm(actionName: "Delete", controllerName: "Users", method: FormMethod.Post, routeValues: new { id = _userManager.GetUserId(User) }))
+                    {
+
+                        <button type="submit" class="dropdown-item">Delete</button>
+
+                    }
         </li>
       </ul>
     </li>

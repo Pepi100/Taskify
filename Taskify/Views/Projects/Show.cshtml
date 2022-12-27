@@ -82,27 +82,33 @@
                             </div>
                             <small>@task.User.UserName</small>
                         }
+                        else{
+                            <div class="hide id_user_task">
+                                
+                            </div>
+                        }
                     </div>
                     <br>
 
                     <div class="d-flex">
+                        @if (Model.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
+                        {
+                            <div>
 
-                        <div>
+                                <a class="btn btn-outline-primary" href="/Tasks/Edit/@task.Id"><i class="bi bi-pencil-square"></i>Edit task</a>
 
-                            <a class="btn btn-outline-primary" href="/Tasks/Edit/@task.Id"><i class="bi bi-pencil-square"></i>Edit task</a>
+                            </div>
 
-                        </div>
+                            <div>
 
-                        <div>
-                            @if (Model.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
-                            {
                                 <form method="post" action="/Tasks/Delete/@task.Id">
 
                                     <button class="btn btn-outline-danger" type="submit"><i class="bi bi-trash"></i>Delete Task</button>
 
                                 </form>
-                            }
-                        </div>
+
+                            </div>
+                        }
                         <div>
                             <a class="btn btn-success" href="/Tasks/Show/@task.Id">Show Task</a>
                     </div>
@@ -141,7 +147,7 @@
 
                         <input type="hidden" name="ProjectId" value="@Model.Id" />
 
-                        <input type="hidden" name="Status" value="not started" />
+                        <input type="hidden" name="Status" value="Not started" />
 
                         <label>Task info</label>
                         <br />

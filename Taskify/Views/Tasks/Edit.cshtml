@@ -33,13 +33,7 @@
 
                 <br />
                 <br />
-                <input type="hidden" name="Status" value=" " />
-                @Html.Label("Status", "Task Status")
-                <br />
-                @Html.DropDownList("newStatus", new SelectList(Model.Statuses, "Value", "Text", ViewBag.CurrentStatus), null, new { @class = "form-control" })
-
-                <br />
-                <br />
+                <input type="hidden" name="Status" value=@Model.Status />
 
                 @Html.Label("StartDate", "Task Start Date")
                 <br />

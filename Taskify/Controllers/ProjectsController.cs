@@ -98,15 +98,15 @@ namespace Taskify.Controllers
                 return View(project);
             }
         }
-        [Authorize(Roles = "User,Admin")]
 
+        [Authorize(Roles = "User,Admin")]
         public IActionResult Show(int id)
         {
             var userid = _userManager.GetUserId(User);
             var users = db.UserProjects.Where(userpr => userpr.ProjectId == id).Select(c => c.UserId);
             List<string?> user_ids = users.ToList();
             var project = db.Projects.Include("Tasks.User").Include("User").Where(proj => proj.Id == id).First();
-            ///ar merge sortat dupa task... how?
+            ///ar merge sortat dupa task... how? oare sa sortez tabela inainte?
             if (user_ids.Contains(userid) || User.IsInRole("Admin"))
             {
                 return View(project);
@@ -121,9 +121,13 @@ namespace Taskify.Controllers
 
         [HttpPost]
         [Authorize(Roles = "User,Admin")]
-
         public IActionResult Show([FromForm] Task task)
         {
+            if (DateTime.Compare(task.StartDate, task.EndDate) >= 0)
+            {
+                TempData["message"] = "Data de inceput este dupa data de final!";
+                return Redirect("/Projects/Show/" + task.ProjectId);
+            }
             if (ModelState.IsValid)
             {
                 db.Tasks.Add(task);
@@ -136,6 +140,7 @@ namespace Taskify.Controllers
                 return View(project);
             }
         }
+
         [Authorize(Roles = "User,Admin")]
         public IActionResult Edit(int id)
         {
