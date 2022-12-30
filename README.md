@@ -23,21 +23,21 @@
 
 
 ## Cerinte:
-- [ ] Sa existe 4 tipuri de utilizatori: utilizator neinregistrat, organizator, membru(este un user inregistrat) si administrator (0.5p)
+- [x] Sa existe 4 tipuri de utilizatori: utilizator neinregistrat, organizator, membru(este un user inregistrat) si administrator (0.5p)
 
-- [ ] Utilizatorii neinregistrati pot sa vada pagina de prezentare a platformei si formularele de autentificare si inregistrare (0.5p)
+- [x] Utilizatorii neinregistrati pot sa vada pagina de prezentare a platformei si formularele de autentificare si inregistrare (0.5p)
 
 - [x] Utilizatorii care creeaza un proiect devin automat organizatori, pot adauga membri si pot crea task-uri (1.5p)
 
-- [ ] Organizatorii adauga, modifica si sterg task-uri si asigneaza task-urile membrilor echipei (1.5p)
+- [x] Organizatorii adauga, modifica si sterg task-uri si asigneaza task-urile membrilor echipei (1.5p)
 
 - [x] Membrii pot doar sa lase comentarii la task-urile existente si sa isi modifice sau sa isi stearga comentariile proprii (1.5p)
 
-- [ ] Membrii au acces la task-urile din proiectele echipelor din care acestia fac parte (0.5p)
+- [x] Membrii au acces la task-urile din proiectele echipelor din care acestia fac parte (0.5p)
 
 - [x] Atat organizatorul, cat si membrii pot modifica statusul unui task: not started, in progress, completed (1.0p)
 
-- [ ] Fiecare echipa are task-urile listate in pagina speciala a echipei. (0.5p) 
+- [x] Fiecare echipa are task-urile listate in pagina speciala a echipei. (0.5p) 
 
 - [x] Task-urile au titlu, descriere, status, comentarii lasate de membrii echipei, data start, data finalizare (0.5p)
 
