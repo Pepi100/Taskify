@@ -41,6 +41,8 @@ html {
   min-height: 100%;
 }
 
+
+
 body {
     margin-bottom: 60px;
     background-color: var(--White);
@@ -54,15 +56,6 @@ body {
 
 /* custom style */
 
-.row {
-    padding: 0;
-    margin: 0;
-}
-
-.container {
-    padding: 0;
-    margin: 0;
-}
 
 
 
@@ -189,15 +182,7 @@ header{
             
         }
 
-/* Projects navbar*/
 
-.menu-navbar {
-    
-    height: 100vh;
-    
-    left:0;
-
-}
 
 
 
@@ -206,4 +191,5 @@ header{
 .hide{
     display: none;
 }
+
 

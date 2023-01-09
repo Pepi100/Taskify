@@ -1,16 +1,22 @@
 ﻿@model Taskify.Models.Project
 @inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager
 
+@{
+    ViewBag.Title = @Model.Title;
 
-<div class="d-flex justify-content-center">
+     <head>
+         <link rel="stylesheet" href="~/css/projects.css">
+    </head>
+}
 
-    <a class="btn btn-outline-success" href="/Projects/Index/">Show all projects</a>
+
+
+    <a id="back" href="/Projects/Index/"><i class="bi bi-arrow-90deg-left"></i></a>
 
     <a class="btn btn-outline-success" href="/Projects/New">Add new project</a>
 
-</div>
 
-<br />
+
 
 <div class="card">
 
