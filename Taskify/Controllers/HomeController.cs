@@ -33,6 +33,12 @@ namespace Taskify.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult SendMessage()
+        {
+            TempData["mail"] = "Thanks! The message has been sent!";
+            return Redirect("/Home/Contact");
+        }
         
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
