@@ -1,8 +1,9 @@
 ﻿@model Taskify.Models.Project
 @{
-    ViewBag.Title = "Create A New Project";
+   
 
     <head>
+        
          <link rel="stylesheet" href="~/css/projects.css">
     </head>
 }
@@ -17,15 +18,17 @@
             {
                 @Html.Label("Title", "Project Title") <!-- Aici numele de "Title" TREBUIE inlocuit-->
                 <br />
+                @Html.ValidationMessageFor(m => m.Title, null, new{@class = "text-danger"})
                 @Html.TextBox("Title", null, new { @class = "form-control" })
                 <br />
-                @Html.ValidationMessageFor(m => m.Title, null, new{@class = "text-danger"})
+                
                 
                 @Html.Label("Description", "Project Description")
                 
                 @Html.TextArea("Description", null, new { @class = "form-control" })
                                
-                @Html.ValidationSummary(false, "", new { @class = "textdanger" })
+                /*@Html.ValidationSummary(false, "", new { @class = "textdanger" }) 
+                */
                 
                 <button class="btn" type="submit">
                     Create

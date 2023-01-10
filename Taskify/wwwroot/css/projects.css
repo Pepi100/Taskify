@@ -15,25 +15,29 @@
         width: 200px;
         border: 0;
     }
-
+        .projects-container > .row > a:hover {
+            transition-duration: 0.3s;
+            transform: scale(1.08);
+            box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+        }
         .projects-container > .row > a > .card-body {
             padding: 0;
             margin: 0;
             text-align: center;
             vertical-align: middle;
-            border: 1px solid var(--Grey);
+            border: 4px solid var(--Lilac);
             border-radius: 1rem;
         }
 
             .projects-container > .row > a > .card-body > .bi {
                 font-size: 5vh;
-                color: var(--Navy);
+                color: var(--Lilac);
                 margin: 0;
                 padding: 0;
             }
 
             .projects-container > .row > a > .card-body > .prog-title {
-                border: 1px solid var(--Grey);
+                border: 4px solid var(--Lilac);
                 width: 100%;
                 height: 20%;
                 color: var(--Navy);
@@ -51,6 +55,16 @@
         }
 
 
+
+#username{
+    position:absolute;
+    bottom :40px;
+
+    font-size:small;
+    color: var(--Lilac);
+
+
+}
 
 
  .btn {
@@ -75,30 +89,29 @@
 
 
   #project-view{
-      position:absolute;
+      position:fixed;
       height: 80%;
-      width: 15%;
+      
       left:0px;
       z-index:100;
 
 
   }
 
-#options {
-    position: absolute;
-    top: 0px;
+#task-switch {
+    position: fixed;
+
+    left: 10px;
+    bottom:10px;
+}
+
+
+
+
+#add-task-view {
+    position: fixed;
+    height: 80%;
     right: 0px;
-    border:0;
+    z-index: 100;
 }
 
-  .dropdown::marker{
-      content:none;
-  }
-
-  .dropdown > button{
-      border:0;
-  }
-
-.dropdown-menu{
-    width:50%;
-}

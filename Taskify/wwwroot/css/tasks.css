@@ -1,0 +1,22 @@
+
+
+h3 {
+    color: var(--Lilac);
+    font-size: xx-large;
+    transition-duration: 0.5s;
+}
+
+
+
+h3:hover {
+    color: var(--Lilac);
+    font-size: xx-large;
+    transform:scale(1.2);
+    
+}
+
+.comm-container {
+    border: 3px solid var(--Lilac);
+    border-radius: 10px;
+    padding-top:10px;
+}
