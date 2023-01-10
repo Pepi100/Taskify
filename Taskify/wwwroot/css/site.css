@@ -61,6 +61,27 @@ a{
 
 /* custom style */
 
+
+#options {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border: 0;
+}
+
+.dropdown::marker {
+    content: none;
+}
+
+.dropdown > button {
+    border: 0;
+}
+
+.dropdown-menu {
+    width: 50%;
+}
+
+
 #back {
     position: fixed;
     bottom: 15px;

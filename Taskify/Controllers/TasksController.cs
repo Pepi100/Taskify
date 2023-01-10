@@ -160,7 +160,7 @@ namespace Taskify.Controllers
                         task.Status = newStatus;
                         db.SaveChanges();
 
-                        TempData["message"] = "User added to task";
+                        TempData["message"] = "Changed status";
                         TempData["messageType"] = "alert-success";
                     }
                     else
