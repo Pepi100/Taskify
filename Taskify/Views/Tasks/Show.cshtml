@@ -226,16 +226,16 @@
 
                         <input type="hidden" name="TaskId" value="@Model.Id" />
 
-                        <label>Comm info</label>
+                        
+                        <label>Post a comment</label>
                         <br />
-                        <label>Content</label>
-                        <textarea class="form-control" name="Content"></textarea>
-
                         @Html.ValidationMessage("Content", null, new { @class = "text-danger"})
 
-                        <br /><br />
+                        <br/>
+                        <textarea class="form-control" name="Content"></textarea>
 
-                        @Html.ValidationSummary(false, "", new { @class = "textdanger" })
+
+                        <br />
 
                         <button class="btn btn-success " type="submit">Add a comm</button>
 

@@ -128,12 +128,13 @@ namespace Taskify.Controllers
         [Authorize(Roles = "User,Admin")]
         public IActionResult Show([FromForm] Task task)
         {
+            bool flag = true;
             if (DateTime.Compare(task.StartDate, task.EndDate) >= 0)
             {
-                TempData["message"] = "Data de inceput este dupa data de final!";
-                return Redirect("/Projects/Show/" + task.ProjectId);
+                TempData["messageerr"] = "Start date must be before end date";
+                flag = false;
             }
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && flag)
             {
                 db.Tasks.Add(task);
                 db.SaveChanges();

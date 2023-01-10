@@ -47,7 +47,7 @@ namespace Taskify.Controllers
             var task = db.Tasks.Include("Comments.User").Include("User").Include("Project")
                                 .Where(tsk => tsk.Id == id).First();
             ViewBag.Users = db.UserProjects.Include("User")
-                .Where(c => c.ProjectId == task.ProjectId); ///de sortat dupa nume .Select(c => c.UserId, c.User.UserName)
+                .Where(c => c.ProjectId == task.ProjectId).OrderBy(c => c.User.UserName); ///de sortat dupa nume .Select(c => c.UserId, c.User.UserName)
             if (CheckUser(task.ProjectId) || User.IsInRole("Admin"))
             {
                 task.Statuses = GetAllStatuses();
@@ -65,7 +65,7 @@ namespace Taskify.Controllers
         [HttpPost]
         public IActionResult Show([FromForm] Comment comment)
         {
-            Task task = db.Tasks.Include("Comments").Where(tsk => tsk.Id == comment.TaskId).First();
+            Task task = db.Tasks.Include("Comments.User").Include("User").Include("Project").Where(tsk => tsk.Id == comment.TaskId).First();
             if (CheckUser(task.ProjectId) || User.IsInRole("Admin"))
             {
                 comment.Date = DateTime.Now;
@@ -75,11 +75,17 @@ namespace Taskify.Controllers
                     db.Comments.Add(comment);
                     db.SaveChanges();
                     return Redirect("/Tasks/Show/" + comment.TaskId);
+
                 }
                 else
                 {
+                    ViewBag.Users = db.UserProjects.Include("User")
+                        .Where(c => c.ProjectId == task.ProjectId).OrderBy(c => c.User.UserName);
+                    task.Statuses = GetAllStatuses();
+                    ViewBag.CurrentStatus = task.Status;
                     return View(task);
                 }
+               
             }
             else
             {
@@ -230,7 +236,7 @@ namespace Taskify.Controllers
                 {
                     if (DateTime.Compare(requestTask.StartDate, requestTask.EndDate) >= 0)
                     {
-                        TempData["message"] = "Data de inceput este dupa data de final!";
+                        TempData["messageerr"] = "Start date must be before end date";
                         return Redirect("/Tasks/Edit/" + id);
                     }
 

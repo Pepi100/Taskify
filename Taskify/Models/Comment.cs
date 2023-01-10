@@ -1,5 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿using Microsoft.Build.Framework;
+using System.ComponentModel.DataAnnotations;
+using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 
 namespace Taskify.Models
 {
@@ -9,7 +10,7 @@ namespace Taskify.Models
         [Key]
         public int Id { get; set; }
         
-        [Required]
+        [Required(ErrorMessage = "Please insert your comment")]
         public string Content { get; set; }
 
         public DateTime Date { get; set; }
