@@ -17,18 +17,20 @@
             {
                 @Html.Label("Title", "Project Title") <!-- Aici numele de "Title" TREBUIE inlocuit-->
                 <br />
+                @Html.ValidationMessageFor(m => m.Title, null, new{@class = "text-danger"})
+                <br />
                 @Html.TextBox("Title", null, new { @class = "form-control" })
                 <br />
-                @Html.ValidationMessageFor(m => m.Title, null, new{@class = "text-danger"})
                 
                 @Html.Label("Description", "Project Description")
+                <br />
+                @Html.ValidationMessageFor(m => m.Description, null, new{@class = "text-danger"})
+                <br />
                 
                 @Html.TextArea("Description", null, new { @class = "form-control" })
-                               
-                @Html.ValidationSummary(false, "", new { @class = "textdanger" })
-                
+                                               
                 <button class="btn" type="submit">
-                    Create
+                    Add project
                 </button>
             }
         </div>

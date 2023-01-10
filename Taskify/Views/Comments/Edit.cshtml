@@ -13,11 +13,12 @@
 
 
 
-                @Html.Label("Content", "Comment Content")
+                @Html.Label("Content", "Edit your comment")
+                <br />
+                @Html.ValidationMessageFor(m => m.Content, null, new { @class = "text-danger" })
                 <br />
                 @Html.EditorFor(m => m.Content, new { htmlAttributes = new { @class = "form-control" } })
 
-                @Html.ValidationMessageFor(m => m.Content, null, new { @class = "text-danger" })
                
 
                 <button class="btn btn-sm btn-success" type="submit">Update content</button>
