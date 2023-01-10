@@ -1,6 +1,16 @@
 ﻿@{
     ViewBag.Title = "Projects";
+      <head>
+         <link rel="stylesheet" href="~/css/projects.css">
+    </head>
 }
+
+@{
+
+    Random rnd = new Random();
+
+    
+   }
 
 
 @if (ViewBag.Message != null)
@@ -26,39 +36,40 @@
 }
 else
 { 
-    
-  
-              <div class="well well-sm">
-  
-                <form class="form-inline my-2 my-lg-0">
-                  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-                </form>
-                <strong>Category Title</strong>
-        <div class="btn-group">
-            <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list">
-            </span>List</a> <a href="#" id="grid" class="btn btn-default btn-sm"><span
-                class="glyphicon glyphicon-th"></span>Grid</a>
-        </div>
 
-              </div>
-            
     
-    <div class="container">
-        <div id="products" class="row list-group">
+
+    <br />
+    <br />
+
+     <div class="container-fluid">
+        <div class="d-flex justify-content-evenly">
+     <h2 class= "text-center">Here's a list of your projects:</h2>
+
+    <a class="btn" href="/Projects/New"><i class="bi bi-plus-circle"></i> Add a new project!</a>
+
+    </div>
+    </div>
+    
+    <div class="container projects-container col">
+        <div class="row ">
    
 
          
-                @foreach (Taskify.Models.Project project in ViewBag.Projects)
+                 @foreach (Taskify.Models.Project project in ViewBag.Projects)
                 {
-                       <div class="item  col-xs-4 col-lg-4">
-                        <a  href="/Projects/Show/@project.Id">
-                            <div class="thumbnail">
-                                <div class="caption">
 
-                                    <h4 class=" group inner list-group-item-heading ">@project.Title</h4>
+                    int num = rnd.Next(7);
 
-                                    <p class="group inner list-group-item-text">@project.Description </p>
+                        <a class=" card justify-content-center col-sm-6 col-md-4 col-lg-3 " href="/Projects/Show/@project.Id">
+
+
+
+                                <div class="card-body justify-content-center">
+                                    <i  class="bi @(ViewBag.Icons[num])" ></i>
+
+                                    <div class="prog-title">@project.Title</div>
+
                                    @* <div class="card-text">@project.Description</div>*@
                                     @*<div class="d-flex justify-content-between flex-row mt-5">
                                         @if (project.User is not null)
@@ -66,23 +77,13 @@ else
                                             <div><i class="bi bi-person"></i>@project.User.UserName</div>
                                         }
                                     </div>*@
-                                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <p class="lead">
-                                $21.000</p>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="http://www.jquery2dotnet.com">Add to cart</a>
-                        </div>
-                    </div>
+                                </div>
 
 
 
 
-               
+
                         </a>
-
-                        </div>
                 }
                 </div>
 

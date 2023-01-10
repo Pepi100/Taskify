@@ -1,16 +1,19 @@
 ﻿@inject Microsoft.AspNetCore.Identity.UserManager<ApplicationUser> _userManager
 
+@{
+ ViewBag.Title = "Users";
+}
+
+
 @if (ViewBag.Message != null)
 {
     <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
 }
 <br/>
 
-<div class="d-flex justify-content-center">
+<a id="back" href="/Projects/Show/@ViewBag.Project.Id"><i class="bi bi-arrow-90deg-left"></i></a>
 
-    <a class="btn btn-outline-success" href="/Projects/Show/@ViewBag.Project.Id">Back to project</a>
 
-</div>
 
 <h2 class="text-center mt-5">Users in this project:</h2>
 <br />
@@ -36,7 +39,7 @@
                     </form>
                 }
             }
-            <div class="card-text">rol</div>
+            
             
         </div>
        

@@ -37,7 +37,12 @@ namespace Taskify.Controllers
 
             var projects = db.Projects.Include("User").Where(proj => proj_ids.Contains(proj.Id)).OrderBy(c => c.Title);
 
-            if(!projects.Any())
+            string[] icons = { "bi-airplane", "bi-bounding-box", "bi-brightness-high-fill", "bi-bell", "bi-bookmarks-fill", "bi-basket3-fill", "bi-arrow-down-up", "bi-award" };
+
+            ViewBag.Icons = icons;
+
+
+            if (!projects.Any())
             {
                 ViewBag.Projects = 0;
             }
