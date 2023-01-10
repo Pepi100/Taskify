@@ -16,19 +16,25 @@
             method: FormMethod.Post,
             routeValues: new { id = Model.Id }))
             {
-               
 
+                @if (TempData["messageerr"] != null)
+                {
+                    <p class="alert-danger p-3 rounded-3 mb-5">@TempData["messageerr"]</p>
+                }
 
                 @Html.Label("Title", "Task Title")
                 <br />
+                @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
+                <br />
                 @Html.EditorFor(m => m.Title, new { htmlAttributes = new { @class = "form-control" } })
 
-                @Html.ValidationMessageFor(m => m.Title, null, new { @class = "text-danger" })
                 <br />
                 <br />
 
                 @Html.Label("Description", "Task Description")
                 <br />
+                @Html.ValidationMessageFor(m => m.Description, null, new { @class = "text-danger" })
+                <br/>
                 @Html.Editor("Description", new { htmlAttributes = new { @class = "form-control" } })
 
                 <br />

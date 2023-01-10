@@ -8,9 +8,10 @@ namespace Taskify.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required(ErrorMessage = "Titlul este obligatoriu")]
+        [Required(ErrorMessage = "Please insert the task title")]
         public string Title { get; set; }
-        [Required(ErrorMessage = "Continutul articolului este obligatoriu")]
+        [Required(ErrorMessage = "Please insert the description of this task")]
+        [StringLength(200, ErrorMessage = "The task description must have at most 200 characters")]
         public string Description { get; set; }
         public string Status { get; set; } /*Not Started, In Progress, Completed*/
 

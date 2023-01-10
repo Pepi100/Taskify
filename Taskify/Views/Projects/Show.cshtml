@@ -78,6 +78,8 @@
     @_userManager.GetUserId(User)
 </div>
 
+
+
 @* Afisare tskuri impreuna cu butoanele de editare si stergere *@
 @if (Model.Tasks is not null)
 {
@@ -162,20 +164,24 @@
                 <form method="post" action="/Projects/Show/@Model.Id">
 
                     <div class="card-body">
-
+                            @if (TempData["messageerr"] != null)
+                            {
+                                <p class="alert-danger p-3 rounded-3 mb-5">@TempData["messageerr"]</p>
+                            }
                         <input type="hidden" name="ProjectId" value="@Model.Id" />
 
                         <input type="hidden" name="Status" value="Not started" />
 
-                        <label>Task info</label>
-                        <br />
                         <lable>Task title</lable>
+                        <br/>
+                            @Html.ValidationMessageFor((m => m.Title ), null, new { @class = "text-danger"})
+                            <br />
                         <textarea class="form-control" name="Title"></textarea>
-
-                        @Html.ValidationMessage("Title", null, new { @class = "text-danger"})
-
                         <br /><br />
                         <label>Task description</label>
+                        <br/>
+                        @Html.ValidationMessageFor((m => m.Description ), null, new { @class = "text-danger"})
+                        <br/>
                         <textarea class="form-control" name="Description"></textarea>
                         <br /><br />
 
@@ -185,7 +191,6 @@
                         <label>End date</label>
                         <input type="date" name="EndDate" />
                         <br /><br/>
-                        @Html.ValidationSummary(false, "", new { @class = "textdanger" })
 
                         <button class="btn btn-success " type="submit">Add a task</button>
 
