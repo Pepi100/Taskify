@@ -48,6 +48,7 @@ img {
 }
 
 .card {
+    transition-duration: 0.3s;
     width: 350px;
     border-color: var(--Coral);
     border-width: 4px;
@@ -77,6 +78,16 @@ img {
 
 .py-5 > .container {
     width: 90%;
+}
+
+.icons a i{
+    color: var(--Coral);
+}
+
+.card:hover {
+    transition-duration: 0.3s;
+    transform: scale(1.08);
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
 }
 
 /*--------------------------------------------------------------

@@ -1,16 +1,12 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
     ViewBag.Title = "Projects";
       <head>
          <link rel="stylesheet" href="~/css/projects.css">
     </head>
 }
-
-@{
-
-    Random rnd = new Random();
-
-    
-   }
 
 
 @if (ViewBag.Message != null)
@@ -59,7 +55,7 @@ else
                  @foreach (Taskify.Models.Project project in ViewBag.Projects)
                 {
 
-                    int num = rnd.Next(7);
+                    int num = project.Id % ViewBag.Icons.Length;
 
                         <a class=" card justify-content-center col-sm-6 col-md-4 col-lg-3 " href="/Projects/Show/@project.Id">
 
