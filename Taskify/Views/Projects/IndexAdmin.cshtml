@@ -23,14 +23,14 @@
 
                 <div class="card-body d-flex justify-content-between flex-column">
                     <div>
-                        <p><i class="bi bi-person"> </i> UserName: @project.Title</p>
+                        <p><i class="bi bi-card-list"> </i> Project: @project.Title</p>
 
-                        <p><i class="bi bi-envelope"></i> Email utilizator: @project.Description</p>
+                        <p><i class="bi bi-card-list"></i> Description: @project.Description</p>
 
 
                         @if (@project.User.UserName != null)
                         {
-                            <p><i class="bi bi-person"> </i> Nume utilizator: @project.User.UserName</p>
+                            <p><i class="bi bi-person"> </i> Username: @project.User.UserName</p>
                         }
 
 

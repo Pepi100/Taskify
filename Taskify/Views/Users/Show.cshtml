@@ -9,10 +9,10 @@
             <p><i class="bi bi-person"> </i> Last Name: @Model.LastName</p>
             <p><i class="bi bi-person"> </i> Username: @Model.UserName</p>
 
-            <p><i class="bi bi-envelope"></i> Email utilizator: @Model.Email</p>
+            <p><i class="bi bi-envelope"></i> Email: @Model.Email</p>
 
             @if(ViewBag.Roles.Count > 0){
-                <p><i class="bi bi-person"> </i> Roluri utilizator:</p>
+                <p><i class="bi bi-person"> </i> User role:</p>
                 @foreach(var role in ViewBag.Roles)
                 {
                     <span class="rounded-pill bg-dark mr-2 px-4 py-2 text-white">@role</span>

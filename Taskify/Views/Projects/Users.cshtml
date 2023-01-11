@@ -75,11 +75,10 @@
 
             <h3 class="card-title alert-info py-3 px-3 rounded-2">@user.Email</h3>
 
-            <div class="card-text">rol</div>
             <form method="post" action="/Projects/Users/@ViewBag.Project.Id">
                 <input type="hidden" name="UserId" value="@user.Id" />
                 <input type="hidden" name="ProjectId" value="@ViewBag.Project.Id" />
-                <button type="submit">Adauga</button>
+                <button type="submit">Add user in project team</button>
             </form>
             
         </div>
